@@ -782,6 +782,10 @@
         ['OS=="solaris"', {
           'ldflags': [ '-I<(SHARED_INTERMEDIATE_DIR)' ]
         }],
+        # Skip cctest when building for iOS.
+        [ 'OS=="ios"', {
+          'type': 'none',
+        }],
       ],
       'msvs_settings': {
         'VCLinkerTool': {
