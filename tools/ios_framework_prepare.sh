@@ -18,7 +18,7 @@ make clean
 TARGET_LIBRARY_PATH='tools/ios-framework/bin/arm64'
 
 ./configure --dest-os=ios --dest-cpu=arm64 --without-chakra-jit --enable-static --with-intl=none --openssl-no-asm
-make -j$(getconf _NPROCESSORS_ONLN)
+make
 
 mkdir -p $TARGET_LIBRARY_PATH
 
@@ -37,7 +37,7 @@ make clean
 TARGET_LIBRARY_PATH='tools/ios-framework/bin/x64'
 
 ./configure --dest-os=ios --dest-cpu=x64 --without-chakra-jit --enable-static --with-intl=none --openssl-no-asm
-make -j$(getconf _NPROCESSORS_ONLN)
+make
 
 mkdir -p $TARGET_LIBRARY_PATH
 
