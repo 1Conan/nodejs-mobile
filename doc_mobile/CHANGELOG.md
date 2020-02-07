@@ -6,6 +6,7 @@
 </tr>
 <tr>
 <td>
+<a href="#0.2.2">0.2.2</a><br/>
 <a href="#0.2.1">0.2.1</a><br/>
 <a href="#0.2.0">0.2.0</a><br/>
 <a href="#0.1.9">0.1.9</a><br/>
@@ -22,8 +23,28 @@
 </tr>
 </table>
 
+
+<a id="0.2.2"></a>
+## 2020-02-10, Version 0.2.2 (Current)
+
+### Notable Changes
+
+* Fixes for building nodejs-mobile and running the tests with updated versions of Xcode, ios-deploy and Android NDK.
+* Fixes use of FICLONE file copy on Android 10.
+
+### Commits
+
+* [[`8799c72d8a`](https://github.com/janeasystems/nodejs-mobile/commit/8799c72d8ab7cb5ae369bde8f285907d18d7da99)] - Node.js on Mobile v0.2.2 (Jaime Bernardo)
+* [[`7efbaae738`](https://github.com/janeasystems/nodejs-mobile/commit/7efbaae738979b5744082c8926a1ef6fa9b6895f)] - deps,uv: use copyfile fallback for FICLONE EACCES (Jaime Bernardo)
+* [[`5d382cd649`](https://github.com/janeasystems/nodejs-mobile/commit/5d382cd649a1bce7e77563a2f6916cc0e4b613de)] - test,ios: skip tests that send empty UDP packets (Jaime Bernardo)
+* [[`a25565b916`](https://github.com/janeasystems/nodejs-mobile/commit/a25565b91673fa5f4b0061e0b601bfac139b07f2)] - test,android: add google repo in test app (Jaime Bernardo)
+* [[`b6094ce5bc`](https://github.com/janeasystems/nodejs-mobile/commit/b6094ce5bcd92e7c884d4c48e42682153a39c7a7)] - ios,test: use ios-deploy output commands (Jaime Bernardo)
+* [[`2f2b5a8b21`](https://github.com/janeasystems/nodejs-mobile/commit/2f2b5a8b21611b92c7abf755f8964927208f266b)] - ios: fix amd64 assembly hex constants (Jaime Bernardo)
+* [[`d731966cf3`](https://github.com/janeasystems/nodejs-mobile/commit/d731966cf36550c68b4d7ce22765ca7fd73d0733)] - meta: remove upstream issue template files (Jaime Bernardo)
+* [[`2101f2096d`](https://github.com/janeasystems/nodejs-mobile/commit/2101f2096d59d2a081f64da2f10fd7385222ac8a)] - Working on Node.js for Mobile Apps v0.2.2 (Jaime Bernardo)
+
 <a id="0.2.1"></a>
-## 2019-04-23, Version 0.2.1 (Current)
+## 2019-04-23, Version 0.2.1
 
 ### Notable Changes
 
