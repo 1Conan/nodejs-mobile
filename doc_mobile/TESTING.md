@@ -14,7 +14,7 @@ You'll need a macOS development machine, an iOS arm64 physical device running iO
 
 iOS tests depend on the [`ios-deploy` tool](https://github.com/phonegap/ios-deploy) for installing and running the test app. You can install it by using npm:
 ```sh
-npm install -g ios-deploy@1.9.2
+npm install -g ios-deploy@1.10.0
 ```
 
 You'll need to build nodejs-mobile, so [its prerequisites should also be installed on your system.](https://github.com/janeasystems/nodejs-mobile#prerequisites-to-build-the-ios-framework-library-on-macos)
@@ -72,7 +72,7 @@ DEVICE_ID=1234567890abcdef123456789abcdef987654321 ./tools/test.py --report --fl
 
 You'll need a macOS or Linux development machine, and a physical Android device.
 
-You'll need [Android Studio](https://developer.android.com/studio/install.html) installed on your development Machine, alongside `Java`, `Gradle`, the `Android 8.0 (Android SDK Platform 26)`, `Android SDK Build Tools v26.0.1`, `Android SDK Tools`, `Android SDK Platform-Tools`, `NDK version >=17` and `CMake`.
+You'll need [Android Studio](https://developer.android.com/studio/install.html) installed on your development Machine, alongside `Java`, `Gradle`, the `Android 8.0 (Android SDK Platform 26)`, `Android SDK Build Tools v29.0.2`, `Android SDK Tools`, `Android SDK Platform-Tools`, `NDK version >=20b` and `CMake 3.6.4111459`.
 
 You should set the Environment variables required to build Android Applications from the command line: the `ANDROID_HOME` variable pointing to your `android-sdk` path and the `ANDROID_NDK_HOME` variable pointing to the installed NDK path (it usually is `$ANDROID_HOME/ndk-bundle`) . You should also add `$ANDROID_HOME/platform-tools`, `$ANDROID_HOME/tools` and `$ANDROID_HOME/tools/bin` to the `PATH` environment variable.
 
