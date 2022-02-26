@@ -1258,6 +1258,8 @@ def configure_node_lib_files(o):
 def configure_node(o):
   if options.dest_os == 'android':
     o['variables']['OS'] = 'android'
+  if options.dest_os == 'ios':
+    o['variables']['OS'] = 'ios'
   o['variables']['node_prefix'] = options.prefix
   o['variables']['node_install_npm'] = b(not options.without_npm)
   o['variables']['node_install_corepack'] = b(not options.without_corepack)
