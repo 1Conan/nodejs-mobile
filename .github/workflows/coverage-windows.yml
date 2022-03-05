@@ -9,6 +9,8 @@ on:
       - 'deps/**'
       - 'doc/**'
       - 'tools/**'
+      - .github/**
+      - '!.github/workflows/coverage-windows.yml'
   push:
     branches:
       - master
@@ -19,6 +21,8 @@ on:
       - 'deps/**'
       - 'doc/**'
       - 'tools/**'
+      - .github/**
+      - '!.github/workflows/coverage-windows.yml'
 
 env:
   PYTHON_VERSION: '3.10'
@@ -30,6 +34,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2
         with:
