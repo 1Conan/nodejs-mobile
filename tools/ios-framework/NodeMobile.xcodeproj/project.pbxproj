@@ -26,6 +26,10 @@
 		27A191B827CA2F6A00DF8360 /* libv8_zlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A191B727CA2F6900DF8360 /* libv8_zlib.a */; };
 		27A191BA27CA2F7300DF8360 /* libv8_initializers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A191B927CA2F7300DF8360 /* libv8_initializers.a */; };
 		27A191BC27CA31C200DF8360 /* libv8_compiler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A191BB27CA31C200DF8360 /* libv8_compiler.a */; };
+		2AEB53CD27D3BB3500B48104 /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AEB53C927D3BB3500B48104 /* libicudata.a */; };
+		2AEB53CE27D3BB3500B48104 /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AEB53CA27D3BB3500B48104 /* libicui18n.a */; };
+		2AEB53CF27D3BB3500B48104 /* libicuucx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AEB53CB27D3BB3500B48104 /* libicuucx.a */; };
+		2AEB53D027D3BB3500B48104 /* libicustubdata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AEB53CC27D3BB3500B48104 /* libicustubdata.a */; };
 		3C02AFD41FA919C30053C191 /* NodeMobile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C02AFD31FA919C30053C191 /* NodeMobile.cpp */; };
 		D9A7619D1F7C63A8006AFE86 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 331917C21EC4702A00F93D52 /* CoreFoundation.framework */; };
 		D9A762281F7C675E006097B1 /* NodeMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = D9A762261F7C674F006097B1 /* NodeMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -51,6 +55,10 @@
 		27A191B727CA2F6900DF8360 /* libv8_zlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_zlib.a; path = bin/libv8_zlib.a; sourceTree = "<group>"; };
 		27A191B927CA2F7300DF8360 /* libv8_initializers.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_initializers.a; path = bin/libv8_initializers.a; sourceTree = "<group>"; };
 		27A191BB27CA31C200DF8360 /* libv8_compiler.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_compiler.a; path = bin/libv8_compiler.a; sourceTree = "<group>"; };
+		2AEB53C927D3BB3500B48104 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = bin/libicudata.a; sourceTree = "<group>"; };
+		2AEB53CA27D3BB3500B48104 /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = bin/libicui18n.a; sourceTree = "<group>"; };
+		2AEB53CB27D3BB3500B48104 /* libicuucx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuucx.a; path = bin/libicuucx.a; sourceTree = "<group>"; };
+		2AEB53CC27D3BB3500B48104 /* libicustubdata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicustubdata.a; path = bin/libicustubdata.a; sourceTree = "<group>"; };
 		331917C21EC4702A00F93D52 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		3C02AFD31FA919C30053C191 /* NodeMobile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NodeMobile.cpp; sourceTree = "<group>"; };
 		D9A761AE1F7C63A8006AFE86 /* NodeMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NodeMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,15 +75,19 @@
 				27A1919A27CA2EF300DF8360 /* libuvwasi.a in Frameworks */,
 				27A1919C27CA2EFC00DF8360 /* libnode.a in Frameworks */,
 				27A1919E27CA2F0200DF8360 /* libv8_snapshot.a in Frameworks */,
+				2AEB53CD27D3BB3500B48104 /* libicudata.a in Frameworks */,
 				27A191A027CA2F0D00DF8360 /* libv8_libplatform.a in Frameworks */,
 				27A191A227CA2F1200DF8360 /* libzlib.a in Frameworks */,
+				2AEB53D027D3BB3500B48104 /* libicustubdata.a in Frameworks */,
 				27A191A427CA2F1D00DF8360 /* libllhttp.a in Frameworks */,
 				27A191A627CA2F2300DF8360 /* libcares.a in Frameworks */,
+				2AEB53CE27D3BB3500B48104 /* libicui18n.a in Frameworks */,
 				27A191A827CA2F2B00DF8360 /* libuv.a in Frameworks */,
 				27A191AA27CA2F3200DF8360 /* libnghttp2.a in Frameworks */,
 				27A191AC27CA2F3A00DF8360 /* libbrotli.a in Frameworks */,
 				27A191AE27CA2F4400DF8360 /* libopenssl.a in Frameworks */,
 				27A191B027CA2F4C00DF8360 /* libngtcp2.a in Frameworks */,
+				2AEB53CF27D3BB3500B48104 /* libicuucx.a in Frameworks */,
 				27A191B227CA2F5300DF8360 /* libnghttp3.a in Frameworks */,
 				27A191B427CA2F5F00DF8360 /* libv8_base_without_compiler.a in Frameworks */,
 				27A191B627CA2F6600DF8360 /* libv8_libbase.a in Frameworks */,
@@ -123,6 +135,10 @@
 				27A191AD27CA2F4400DF8360 /* libopenssl.a */,
 				27A191AF27CA2F4C00DF8360 /* libngtcp2.a */,
 				27A191B127CA2F5300DF8360 /* libnghttp3.a */,
+				2AEB53C927D3BB3500B48104 /* libicudata.a */,
+				2AEB53CA27D3BB3500B48104 /* libicui18n.a */,
+				2AEB53CC27D3BB3500B48104 /* libicustubdata.a */,
+				2AEB53CB27D3BB3500B48104 /* libicuucx.a */,
 				27A191B327CA2F5F00DF8360 /* libv8_base_without_compiler.a */,
 				27A191B527CA2F6600DF8360 /* libv8_libbase.a */,
 				27A191B727CA2F6900DF8360 /* libv8_zlib.a */,
