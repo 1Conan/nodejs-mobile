@@ -125,9 +125,9 @@ tools/*/*.i.tmp
 /coverage
 
 # === Rules for Xcode artifacts ===
-*.xcodeproj
+#*.xcodeproj
 *.xcworkspace
-*.pbxproj
+#*.pbxproj
 
 # === Rules for files in `/deps` ===
 # Exclude all files in the vendored `npm`.

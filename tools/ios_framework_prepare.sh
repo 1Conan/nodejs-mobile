@@ -37,6 +37,10 @@ export LIBRARY_FILES=(
     libv8_snapshot.a
     libv8_zlib.a
     libzlib.a
+    libicudata.a
+    libicui18n.a
+    libicustubdata.a
+    libicuucx.a
 )
 
 compile_for_arch() {
@@ -58,7 +62,7 @@ compile_for_arch() {
     ./configure \
         --dest-os=ios \
         --dest-cpu=${TARGET_ARCH} \
-        --with-intl=none \
+        --with-intl=small-icu \
         --cross-compiling \
         --enable-static \
         --openssl-no-asm \
@@ -98,7 +102,7 @@ build_framework() {
     rm -rf tools/ios-framework/bin/*.a
     cp tools/ios-framework/bin/${ARCH}/*.a tools/ios-framework/bin/
 
-    xcodebuild build -project $NODELIB_PROJECT_PATH/NodeMobile.xcodeproj -target "NodeMobile" -configuration Release -arch arm64 -sdk ${SDKTYPE} SYMROOT=${FRAMEWORK_TARGET_DIR}
+    xcodebuild build -project $NODELIB_PROJECT_PATH/NodeMobile.xcodeproj -target "NodeMobile" -configuration Release -arch ${ARCH} -sdk ${SDKTYPE} SYMROOT=${FRAMEWORK_TARGET_DIR}
 }
 
 for COMPILE_FOR_ARCH in "${COMPILE_FOR_ARCHS[@]}"; do

@@ -215,18 +215,22 @@
       'dependencies': [ 'deps/brotli/brotli.gyp:brotli' ],
     }],
 
-    [ 'OS=="mac" or OS=="ios"', {
+    [ 'OS=="mac"', {
       # linking Corefoundation is needed since certain OSX debugging tools
       # like Instruments require it for some features
       'libraries': [ '-framework CoreFoundation' ],
       'defines!': [
         'NODE_PLATFORM="mac"',
-        'NODE_PLATFORM="ios"',
       ],
       'defines': [
         # we need to use node's preferred "darwin" rather than gyp's preferred "mac"
         'NODE_PLATFORM="darwin"',
       ],
+    }],
+    [ 'OS=="ios"', {
+      # linking Corefoundation is needed since certain OSX debugging tools
+      # like Instruments require it for some features
+      'libraries': [ '-framework CoreFoundation' ],
     }],
     [ 'OS=="freebsd"', {
       'libraries': [

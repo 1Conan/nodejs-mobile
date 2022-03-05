@@ -576,7 +576,7 @@
               'MACOSX_DEPLOYMENT_TARGET': '10.10',
             },
             'conditions': [
-              ['target_arch=="arm64"', {
+              ['target_arch=="arm64" and host_arch=="x86_64"', {
                 'xcode_settings': {
                   'ARCHS!': ['arm64'],
                   'ARCHS': ['x86_64']
