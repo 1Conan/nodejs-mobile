@@ -64,19 +64,11 @@ unsigned SimulatorFeaturesFromCommandLine() {
 #endif  // USE_SIMULATOR
 
 constexpr unsigned CpuFeaturesFromCompiler() {
-  unsigned features = 0;
-#if defined(__ARM_FEATURE_JCVT)
-  features |= 1u << JSCVT;
-#endif
-  return features;
+  return 0;
 }
 
 constexpr unsigned CpuFeaturesFromTargetOS() {
-  unsigned features = 0;
-#if defined(V8_TARGET_OS_MACOS)
-  features |= 1u << JSCVT;
-#endif
-  return features;
+  return 0;
 }
 
 }  // namespace
