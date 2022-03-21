@@ -39,6 +39,11 @@
 #include <unistd.h>  // sysconf()
 #endif
 
+#if V8_OS_IOS
+#include <sysctl.h>
+#include <machine.h>
+#endif
+
 #include <ctype.h>
 #include <limits.h>
 #include <stdio.h>
@@ -786,7 +791,18 @@ CPU::CPU()
     delete[] features;
   }
 #elif V8_OS_IOS
-  has_jscvt_ = false;
+
+  size_t size;
+  cpu_type_t type;
+  cpu_subtype_t subtype;
+
+  size = sizeof(type);
+  sysctlbyname("hw.cputype", &type, &size, NULL, 0);
+
+  size = sizeof(subtype);
+  sysctlbyname("hw.cpusubtype", &subtype, &size, NULL, 0);
+
+  has_jscvt_ = (type == CPU_TYPE_ARM) && (subtype == CPU_SUBTYPE_ARM64E);
 #elif V8_OS_MACOSX
   // ARM64 Macs always have JSCVT.
   has_jscvt_ = true;
