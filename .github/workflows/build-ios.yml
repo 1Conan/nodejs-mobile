@@ -1,0 +1,20 @@
+name: Build NodeMobile.framework
+
+on:
+  push:
+    branches:
+      - upstream-node-v16.14.x-ios
+
+jobs:
+  build-ios:
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v2
+      - name: build framework
+        run: |
+          ./tools/ios_framework_prepare.sh
+      - name: Upload framework
+        uses: actions/upload-artifact@v3
+        with:
+          name: NodeMobile
+          path: out_ios/Release-iphoneos/
