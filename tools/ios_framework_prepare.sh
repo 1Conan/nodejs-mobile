@@ -62,7 +62,7 @@ compile_for_arch() {
     ./configure \
         --dest-os=ios \
         --dest-cpu=${TARGET_ARCH} \
-        --with-intl=small-icu \
+        --with-intl=full-icu \
         --cross-compiling \
         --enable-static \
         --openssl-no-asm \
