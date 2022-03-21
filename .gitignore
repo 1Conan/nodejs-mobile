@@ -163,3 +163,6 @@ out_ios
 __pycache__
 .DS_Store
 *~
+
+# === Rules for C++ development ===
+compile_commands.json

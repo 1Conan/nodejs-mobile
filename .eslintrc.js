@@ -163,7 +163,7 @@ module.exports = {
     'keyword-spacing': 'error',
     'linebreak-style': ['error', 'unix'],
     'max-len': ['error', {
-      code: 80,
+      code: 120,
       ignorePattern: '^// Flags:',
       ignoreRegExpLiterals: true,
       ignoreTemplateLiterals: true,
@@ -186,7 +186,6 @@ module.exports = {
     'no-proto': 'error',
     'no-redeclare': ['error', { 'builtinGlobals': false }],
     'no-restricted-modules': ['error', 'sys'],
-    /* eslint-disable max-len */
     'no-restricted-properties': [
       'error',
       {
@@ -239,7 +238,6 @@ module.exports = {
         message: 'Use Number.isNaN() instead of the global isNaN() function.',
       },
     ],
-    /* eslint-enable max-len */
     'no-return-await': 'error',
     'no-self-compare': 'error',
     'no-tabs': 'error',
@@ -297,10 +295,7 @@ module.exports = {
     'valid-typeof': ['error', { requireStringLiterals: true }],
 
     // ESLint recommended rules that we disable
-    'no-cond-assign': 'off',
-    'no-empty': 'off',
     'no-inner-declarations': 'off',
-    'no-prototype-builtins': 'off',
 
     // JSDoc recommended rules that we disable
     'jsdoc/require-jsdoc': 'off',

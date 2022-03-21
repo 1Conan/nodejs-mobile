@@ -12,7 +12,7 @@
 
 Node.js is an open-source, cross-platform, JavaScript runtime environment.
 
-For information on using Node.js, see the [Node.js Website][].
+For information on using Node.js, see the [Node.js website][].
 
 The Node.js project uses an [open governance model](./GOVERNANCE.md). The
 [OpenJS Foundation][] provides support for the project.
@@ -188,8 +188,6 @@ For information about the governance of the Node.js project, see
   **Joyee Cheung** <<joyeec9h3@gmail.com>> (she/her)
 * [mcollina](https://github.com/mcollina) -
   **Matteo Collina** <<matteo.collina@gmail.com>> (he/him)
-* [Mesteery](https://github.com/Mesteery) -
-  **Mestery** <<mestery@protonmail.com>> (he/him)
 * [mhdawson](https://github.com/mhdawson) -
   **Michael Dawson** <<midawson@redhat.com>> (he/him)
 * [mmarchini](https://github.com/mmarchini) -
@@ -382,6 +380,8 @@ For information about the governance of the Node.js project, see
   **Zijian Liu** <<lxxyxzj@gmail.com>> (he/him)
 * [mcollina](https://github.com/mcollina) -
   **Matteo Collina** <<matteo.collina@gmail.com>> (he/him)
+* [Mesteery](https://github.com/Mesteery) -
+  **Mestery** <<mestery@protonmail.com>> (he/him)
 * [mhdawson](https://github.com/mhdawson) -
   **Michael Dawson** <<midawson@redhat.com>> (he/him)
 * [miladfarca](https://github.com/miladfarca) -
@@ -635,7 +635,7 @@ For information about the governance of the Node.js project, see
 
 <!--lint enable prohibited-strings-->
 
-Collaborators follow the [Collaborator Guide](./doc/guides/collaborator-guide.md) in
+Collaborators follow the [Collaborator Guide](./doc/contributing/collaborator-guide.md) in
 maintaining the Node.js project.
 
 ### Triagers
@@ -649,7 +649,7 @@ maintaining the Node.js project.
 * [marsonya](https://github.com/marsonya) -
   **Akhil Marsonya** <<akhil.marsonya27@gmail.com>> (he/him)
 * [Mesteery](https://github.com/Mesteery) -
-  **Mestery** <<mestery@pm.me>>
+  **Mestery** <<mestery@protonmail.com>> (he/him)
 * [PoojaDurgad](https://github.com/PoojaDurgad) -
   **Pooja Durgad** <<Pooja.D.P@ibm.com>>
 * [RaisinTen](https://github.com/RaisinTen) -
@@ -663,6 +663,8 @@ Primary GPG keys for Node.js Releasers (some Releasers sign with subkeys):
 
 * **Beth Griggs** <<bgriggs@redhat.com>>
   `4ED778F539E3634C779C87C6D7062848A1AB005C`
+* **Bryan English** <<bryan@bryanenglish.com>>
+  `141F07595B7B3FFE74309A937405533BE57C7D57`
 * **Colin Ihrig** <<cjihrig@gmail.com>>
   `94AE36675C464D64BAFA68DD7434390BDBE9B9C5`
 * **Danielle Adams** <<adamzdanielle@gmail.com>>
@@ -689,6 +691,7 @@ to sign releases):
 
 ```bash
 gpg --keyserver pool.sks-keyservers.net --recv-keys 4ED778F539E3634C779C87C6D7062848A1AB005C
+gpg --keyserver pool.sks-keyservers.net --recv-keys 141F07595B7B3FFE74309A937405533BE57C7D57
 gpg --keyserver pool.sks-keyservers.net --recv-keys 94AE36675C464D64BAFA68DD7434390BDBE9B9C5
 gpg --keyserver pool.sks-keyservers.net --recv-keys 74F12602B6F1C4E913FAA37AD3A89613643B6201
 gpg --keyserver pool.sks-keyservers.net --recv-keys 71DCFD284A79C3B38668286BC97EC7A07EDE3FC1
@@ -701,7 +704,7 @@ gpg --keyserver pool.sks-keyservers.net --recv-keys 108F52B48DB57BB0CC439B2997B0
 gpg --keyserver pool.sks-keyservers.net --recv-keys B9E2F5981AA6E0CD28160D9FF13993A75599653C
 ```
 
-See the section above on [Verifying Binaries](#verifying-binaries) for how to
+See the section above on [Verifying binaries](#verifying-binaries) for how to
 use these keys to verify a downloaded file.
 
 <details>
@@ -729,6 +732,30 @@ use these keys to verify a downloaded file.
 
 </details>
 
+### Security release stewards
+
+When possible, the commitment to take slots in the
+security release steward rotation is made by companies in order
+to ensure individuals who act as security stewards have the
+support and recognition from their employer to be able to
+prioritize security releases. Security release stewards manage security
+releases on a rotation basis as outlined in the
+[security release process](./doc/contributing/security-release-process.md).
+
+* Datadog
+  * [bengl](https://github.com/bengl) -
+    **Bryan English** <<bryan@bryanenglish.com>> (he/him)
+  * [vdeturckheim](https://github.com/vdeturckheim) -
+    **Vladimir de Turckheim** <<vlad2t@hotmail.com>> (he/him)
+* NearForm
+  * [mcollina](https://github.com/mcollina) -
+    **Matteo Collina** <<matteo.collina@gmail.com>> (he/him)
+* Red Hat and IBM
+  * [joesepi](https://github.com/joesepi) -
+    **Joe Sepi** <<joesepi@ibm.com>> (he/him)
+  * [mhdawson](https://github.com/mhdawson) -
+    **Michael Dawson** <<midawson@redhat.com>> (he/him)
+
 ## License
 
 Node.js is available under the
@@ -739,8 +766,8 @@ license text.
 
 [Code of Conduct]: https://github.com/nodejs/admin/blob/HEAD/CODE_OF_CONDUCT.md
 [Contributing to the project]: CONTRIBUTING.md
-[Node.js Website]: https://nodejs.org/
+[Node.js website]: https://nodejs.org/
 [OpenJS Foundation]: https://openjsf.org/
-[Strategic initiatives]: doc/guides/strategic-initiatives.md
-[Technical values and prioritization]: doc/guides/technical-values.md
+[Strategic initiatives]: doc/contributing/strategic-initiatives.md
+[Technical values and prioritization]: doc/contributing/technical-values.md
 [Working Groups]: https://github.com/nodejs/TSC/blob/HEAD/WORKING_GROUPS.md

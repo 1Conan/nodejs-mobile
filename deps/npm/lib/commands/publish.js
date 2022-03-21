@@ -61,7 +61,7 @@ class Publish extends BaseCommand {
       throw new Error('Tag name must not be a valid SemVer range: ' + defaultTag.trim())
     }
 
-    const opts = { ...this.npm.flatOptions }
+    const opts = { ...this.npm.flatOptions, log }
 
     // you can publish name@version, ./foo.tgz, etc.
     // even though the default is the 'file:.' cwd.
@@ -83,7 +83,8 @@ class Publish extends BaseCommand {
       })
     }
 
-    const tarballData = await pack(spec, opts)
+    // we pass dryRun: true to libnpmpack so it doesn't write the file to disk
+    const tarballData = await pack(spec, { ...opts, dryRun: true })
     const pkgContents = await getContents(manifest, tarballData)
 
     // The purpose of re-reading the manifest is in case it changed,
