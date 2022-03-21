@@ -40,8 +40,8 @@
 #endif
 
 #if V8_OS_IOS
-#include <sysctl.h>
-#include <machine.h>
+#include <sys/sysctl.h>
+#include <mach/machine.h>
 #endif
 
 #include <ctype.h>
