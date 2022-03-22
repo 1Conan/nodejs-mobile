@@ -135,4 +135,3 @@ for COMPILE_FOR_ARCH in "${COMPILE_FOR_ARCHS[@]}"; do
     echo "Building Framework for ${COMPILE_FOR_ARCH}..."
     build_framework ${COMPILE_FOR_ARCH}
 done
-

@@ -38,4 +38,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: NodeMobile
-          path: out_ios/Release-iphoneos/
+          path: |
+            out_ios/Release-iphoneos/NodeMobile.framework
+            out_ios/Release-iphonesimulator/NodeMobile.framework
