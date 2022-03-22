@@ -5,15 +5,35 @@ on:
     branches:
       - upstream-node-v16.14.x-ios
 
+env:
+  SCCACHE_VERSION: 0.2.15
+
 jobs:
   build-ios:
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
-      - uses: mikehardy/buildcache-action@v1
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            /Users/runner/Library/Caches/Mozilla.sccache
+          key: build-ios-${{ env.GITHUB_SHA }}
+          restore-keys: |
+            build-ios-
+
+      - name: setup sccache
+        run: |
+          wget -q https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERSION}/sccache-v${SCCACHE_VERSION}-x86_64-apple-darwin.tar.gz
+          tar xf sccache-v${SCCACHE_VERSION}-x86_64-apple-darwin.tar.gz
+          mv sccache-v${SCCACHE_VERSION}-x86_64-apple-darwin/sccache /usr/local/bin
+          rm -rf sccache-v${SCCACHE_VERSION}-x86_64-apple-darwin*
+          chmod +x /usr/local/bin/sccache
+
       - name: build framework
         run: |
           ./tools/ios_framework_prepare.sh
+
       - name: Upload framework
         uses: actions/upload-artifact@v3
         with:

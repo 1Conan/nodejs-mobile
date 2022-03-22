@@ -15,33 +15,6 @@ SCRIPT_DIR=${PWD}
 cd ../
 
 export LIBRARY_PATH='out/Release'
-export LIBRARY_FILES=(
-    libbrotli.a
-    libcares.a
-    libhistogram.a
-    libllhttp.a
-    libnghttp2.a
-    libnghttp3.a
-    libngtcp2.a
-    libnode.a
-    libopenssl.a
-    libtorque_base.a
-    libuv.a
-    libuvwasi.a
-    libv8_base_without_compiler.a
-    libv8_compiler.a
-    libv8_init.a
-    libv8_initializers.a
-    libv8_libbase.a
-    libv8_libplatform.a
-    libv8_snapshot.a
-    libv8_zlib.a
-    libzlib.a
-    libicudata.a
-    libicui18n.a
-    libicustubdata.a
-    libicuucx.a
-)
 
 compile_for_arch() {
     local TARGET_ARCH=$1
@@ -56,6 +29,13 @@ compile_for_arch() {
     export CXX="$(command -v c++) -arch ${TARGET_ARCH}"
     export CC_host="$(command -v cc) -arch ${HOST_ARCH}"
     export CXX_host="$(command -v c++) -arch ${HOST_ARCH}"
+
+    if command -v sccache &> /dev/null; then
+        export CC="sccache ${CC}"
+        export CXX="sccache ${CXX}"
+        export CC_host="sccache ${CC_host}"
+        export CXX_host="sccache ${CXX_host}"
+    fi
 
     #make clean
 
@@ -74,9 +54,7 @@ compile_for_arch() {
     make -j$(getconf _NPROCESSORS_ONLN)
     mkdir -p ${TARGET_LIBRARY_PATH}
 
-    for LIB in "${LIBRARY_FILES[@]}"; do
-        cp ${LIBRARY_PATH}/${LIB} ${TARGET_LIBRARY_PATH}
-    done
+    cp ${LIBRARY_PATH}/* ${TARGET_LIBRARY_PATH}
 }
 
 lipo_for_archs() {
