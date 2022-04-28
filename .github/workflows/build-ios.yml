@@ -36,7 +36,7 @@ jobs:
 
       - name: convert simulator framework to FAT framework
         run: |
-          vtool -show-build/Release-iphoneos/NodeMobile.framework/NodeMobile > /tmp/buildVersion
+          vtool -show-build out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile > /tmp/buildVersion
           SDK_VERSION=$(grep sdk /tmp/buildVersion | awk '{print $2}')
           MINOS_VERSION=$(grep minos /tmp/buildVersion | awk '{print $2}')
 
