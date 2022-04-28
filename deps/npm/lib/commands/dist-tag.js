@@ -16,6 +16,8 @@ class DistTag extends BaseCommand {
     'ls [<pkg>]',
   ]
 
+  static ignoreImplicitWorkspace = false
+
   async completion (opts) {
     const argv = opts.conf.argv.remain
     if (argv.length === 2) {
@@ -31,7 +33,6 @@ class DistTag extends BaseCommand {
   async exec ([cmdName, pkg, tag]) {
     const opts = {
       ...this.npm.flatOptions,
-      log,
     }
 
     if (['add', 'a', 'set', 's'].includes(cmdName)) {

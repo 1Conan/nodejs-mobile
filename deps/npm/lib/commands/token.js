@@ -14,6 +14,7 @@ class Token extends BaseCommand {
   static name = 'token'
   static usage = ['list', 'revoke <id|token>', 'create [--read-only] [--cidr=list]']
   static params = ['read-only', 'cidr', 'registry', 'otp']
+  static ignoreImplicitWorkspace = true
 
   async completion (opts) {
     const argv = opts.conf.argv.remain
@@ -168,7 +169,7 @@ class Token extends BaseCommand {
   }
 
   config () {
-    const conf = { ...this.npm.flatOptions, log }
+    const conf = { ...this.npm.flatOptions }
     const creds = this.npm.config.getCredentialsByURI(conf.registry)
     if (creds.token) {
       conf.auth = { token: creds.token }

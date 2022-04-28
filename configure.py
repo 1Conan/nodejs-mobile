@@ -47,7 +47,7 @@ parser = argparse.ArgumentParser()
 valid_os = ('win', 'mac', 'solaris', 'freebsd', 'openbsd', 'linux',
             'android', 'aix', 'cloudabi', 'ios')
 valid_arch = ('arm', 'arm64', 'ia32', 'mips', 'mipsel', 'mips64el', 'ppc',
-              'ppc64', 'x32','x64', 'x86', 'x86_64', 's390x', 'riscv64')
+              'ppc64', 'x64', 'x86', 'x86_64', 's390x', 'riscv64', 'loong64')
 valid_arm_float_abi = ('soft', 'softfp', 'hard')
 valid_arm_fpu = ('vfp', 'vfpv3', 'vfpv3-d16', 'neon')
 valid_mips_arch = ('loongson', 'r1', 'r2', 'r6', 'rx')
@@ -779,6 +779,13 @@ parser.add_argument('--v8-enable-object-print',
     default=True,
     help='compile V8 with auxiliar functions for native debuggers')
 
+parser.add_argument('--v8-enable-hugepage',
+    action='store_true',
+    dest='v8_enable_hugepage',
+    default=None,
+    help='Enable V8 transparent hugepage support. This feature is only '+
+         'available on Linux platform.')
+
 parser.add_argument('--node-builtin-modules-path',
     action='store',
     dest='node_builtin_modules_path',
@@ -1161,7 +1168,8 @@ def configure_zos(o):
   o['variables']['node_static_zoslib'] = b(True)
   if options.static_zoslib_gyp:
     # Apply to all Node.js components for now
-    o['include_dirs'] += [os.path.dirname(options.static_zoslib_gyp) + '/include']
+    o['variables']['zoslib_include_dir'] = os.path.dirname(options.static_zoslib_gyp) + '/include'
+    o['include_dirs'] += [o['variables']['zoslib_include_dir']]
   else:
     raise Exception('--static-zoslib-gyp=<path to zoslib.gyp file> is required.')
 
@@ -1444,7 +1452,9 @@ def configure_v8(o):
     raise Exception('--enable-d8 is incompatible with --without-bundled-v8.')
   if options.static_zoslib_gyp:
     o['variables']['static_zoslib_gyp'] = options.static_zoslib_gyp
-
+  if flavor != 'linux' and options.v8_enable_hugepage:
+    raise Exception('--v8-enable-hugepage is supported only on linux.')
+  o['variables']['v8_enable_hugepage'] = 1 if options.v8_enable_hugepage else 0
 
 def configure_openssl(o):
   variables = o['variables']

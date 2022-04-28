@@ -32,6 +32,8 @@ class Diff extends BaseCommand {
     'include-workspace-root',
   ]
 
+  static ignoreImplicitWorkspace = false
+
   async exec (args) {
     const specs = this.npm.config.get('diff').filter(d => d)
     if (specs.length > 2) {
@@ -61,7 +63,6 @@ class Diff extends BaseCommand {
       ...this.npm.flatOptions,
       diffFiles: args,
       where: this.top,
-      log,
     })
     return this.npm.output(res)
   }
@@ -194,7 +195,6 @@ class Diff extends BaseCommand {
         const packument = await pacote.packument(spec, {
           ...this.npm.flatOptions,
           preferOnline: true,
-          log,
         })
         bSpec = pickManifest(
           packument,

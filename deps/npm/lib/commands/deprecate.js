@@ -1,5 +1,4 @@
 const fetch = require('npm-registry-fetch')
-const log = require('../utils/log-shim.js')
 const otplease = require('../utils/otplease.js')
 const npa = require('npm-package-arg')
 const semver = require('semver')
@@ -15,6 +14,8 @@ class Deprecate extends BaseCommand {
     'registry',
     'otp',
   ]
+
+  static ignoreImplicitWorkspace = false
 
   async completion (opts) {
     if (opts.conf.argv.remain.length > 1) {
@@ -51,7 +52,6 @@ class Deprecate extends BaseCommand {
       ...this.npm.flatOptions,
       spec: p,
       query: { write: true },
-      log,
     })
 
     Object.keys(packument.versions)
@@ -66,7 +66,6 @@ class Deprecate extends BaseCommand {
       method: 'PUT',
       body: packument,
       ignoreBody: true,
-      log,
     }))
   }
 }

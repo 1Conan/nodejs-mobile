@@ -39,6 +39,7 @@ class Publish extends BaseCommand {
   ]
 
   static usage = ['[<folder>]']
+  static ignoreImplicitWorkspace = false
 
   async exec (args) {
     if (args.length === 0) {
@@ -55,13 +56,13 @@ class Publish extends BaseCommand {
     const json = this.npm.config.get('json')
     const defaultTag = this.npm.config.get('tag')
     const ignoreScripts = this.npm.config.get('ignore-scripts')
-    const silent = log.level === 'silent'
+    const { silent } = this.npm
 
     if (semver.validRange(defaultTag)) {
       throw new Error('Tag name must not be a valid SemVer range: ' + defaultTag.trim())
     }
 
-    const opts = { ...this.npm.flatOptions, log }
+    const opts = { ...this.npm.flatOptions }
 
     // you can publish name@version, ./foo.tgz, etc.
     // even though the default is the 'file:.' cwd.
@@ -152,7 +153,7 @@ class Publish extends BaseCommand {
 
     const results = {}
     const json = this.npm.config.get('json')
-    const silent = log.level === 'silent'
+    const { silent } = this.npm
     const noop = a => a
     const color = this.npm.color ? chalk : { green: noop, bold: noop }
     await this.setWorkspaces(filters)
@@ -195,7 +196,11 @@ class Publish extends BaseCommand {
     if (spec.type === 'directory') {
       return readJson(`${spec.fetchSpec}/package.json`)
     }
-    return pacote.manifest(spec, { ...opts, fullMetadata: true })
+    return pacote.manifest(spec, {
+      ...opts,
+      fullMetadata: true,
+      fullReadJson: true,
+    })
   }
 }
 module.exports = Publish
