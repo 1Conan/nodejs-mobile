@@ -1,5 +1,4 @@
 const cacache = require('cacache')
-const chalk = require('chalk')
 const fs = require('fs')
 const fetch = require('make-fetch-happen')
 const table = require('text-table')
@@ -102,28 +101,19 @@ class Doctor extends BaseCommand {
       messages.push(line)
     }
 
-    const outHead = ['Check', 'Value', 'Recommendation/Notes'].map(
-      !this.npm.color ? h => h : h => chalk.underline(h)
-    )
+    const outHead = ['Check', 'Value', 'Recommendation/Notes'].map(h => this.npm.chalk.underline(h))
     let allOk = true
-    const outBody = messages.map(
-      !this.npm.color
-        ? item => {
-          allOk = allOk && item[1]
-          item[1] = item[1] ? 'ok' : 'not ok'
-          item[2] = String(item[2])
-          return item
-        }
-        : item => {
-          allOk = allOk && item[1]
-          if (!item[1]) {
-            item[0] = chalk.red(item[0])
-            item[2] = chalk.magenta(String(item[2]))
-          }
-          item[1] = item[1] ? chalk.green('ok') : chalk.red('not ok')
-          return item
-        }
-    )
+    const outBody = messages.map(item => {
+      if (!item[1]) {
+        allOk = false
+        item[0] = this.npm.chalk.red(item[0])
+        item[1] = this.npm.chalk.red('not ok')
+        item[2] = this.npm.chalk.magenta(String(item[2]))
+      } else {
+        item[1] = this.npm.chalk.green('ok')
+      }
+      return item
+    })
     const outTable = [outHead, ...outBody]
     const tableOpts = {
       stringLength: s => ansiTrim(s).length,
@@ -131,10 +121,6 @@ class Doctor extends BaseCommand {
 
     if (!this.npm.silent) {
       this.npm.output(table(outTable, tableOpts))
-      if (!allOk) {
-        // TODO is this really needed?
-        console.error('')
-      }
     }
     if (!allOk) {
       throw new Error('Some problems found. See above for recommendations.')
@@ -149,7 +135,7 @@ class Doctor extends BaseCommand {
       return ''
     } catch (er) {
       if (/^E\d{3}$/.test(er.code || '')) {
-        throw er.code.substr(1) + ' ' + er.message
+        throw er.code.slice(1) + ' ' + er.message
       } else {
         throw er.message
       }
@@ -215,7 +201,7 @@ class Doctor extends BaseCommand {
       const gid = process.getgid()
       const files = new Set([root])
       for (const f of files) {
-        tracker.silly('checkFilesPermission', f.substr(root.length + 1))
+        tracker.silly('checkFilesPermission', f.slice(root.length + 1))
         const st = await lstat(f).catch(er => {
           // if it can't be missing, or if it can and the error wasn't that it was missing
           if (!missingOk || er.code !== 'ENOENT') {

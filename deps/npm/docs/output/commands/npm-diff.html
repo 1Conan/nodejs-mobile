@@ -334,6 +334,8 @@ located within the folder <code>./lib/</code> and changed lines of code within t
 <ul>
 <li>Default: false</li>
 <li>Type: Boolean</li>
+<li>DEPRECATED: <code>--global</code>, <code>--local</code> are deprecated. Use <code>--location=global</code>
+instead.</li>
 </ul>
 <p>Operates in "global" mode, so that packages are installed into the <code>prefix</code>
 folder instead of the current working directory. See
@@ -407,6 +409,7 @@ other things (test, exec, publish, etc.) will operate on the root project,
 <p>When false, specifying individual workspaces via the <code>workspace</code> config, or
 all workspaces via the <code>workspaces</code> flag, will cause npm to operate only on
 the specified workspaces, and not on the root project.</p>
+<p>This value is not exported to the environment for child processes.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->

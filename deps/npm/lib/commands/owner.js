@@ -3,8 +3,18 @@ const npmFetch = require('npm-registry-fetch')
 const pacote = require('pacote')
 const log = require('../utils/log-shim')
 const otplease = require('../utils/otplease.js')
-const readLocalPkgName = require('../utils/read-package-name.js')
+const readPackageJsonFast = require('read-package-json-fast')
 const BaseCommand = require('../base-command.js')
+const { resolve } = require('path')
+
+const readJson = async (pkg) => {
+  try {
+    const json = await readPackageJsonFast(pkg)
+    return json
+  } catch {
+    return {}
+  }
+}
 
 class Owner extends BaseCommand {
   static description = 'Manage package owners'
@@ -12,6 +22,8 @@ class Owner extends BaseCommand {
   static params = [
     'registry',
     'otp',
+    'workspace',
+    'workspaces',
   ]
 
   static usage = [
@@ -38,15 +50,15 @@ class Owner extends BaseCommand {
 
     // reaches registry in order to autocomplete rm
     if (argv[2] === 'rm') {
-      if (this.npm.config.get('global')) {
+      if (this.npm.global) {
         return []
       }
-      const pkgName = await readLocalPkgName(this.npm.prefix)
-      if (!pkgName) {
+      const { name } = await readJson(resolve(this.npm.prefix, 'package.json'))
+      if (!name) {
         return []
       }
 
-      const spec = npa(pkgName)
+      const spec = npa(name)
       const data = await pacote.packument(spec, {
         ...this.npm.flatOptions,
         fullMetadata: true,
@@ -59,22 +71,43 @@ class Owner extends BaseCommand {
   }
 
   async exec ([action, ...args]) {
-    switch (action) {
-      case 'ls':
-      case 'list':
-        return this.ls(args[0])
-      case 'add':
-        return this.changeOwners(args[0], args[1], 'add')
-      case 'rm':
-      case 'remove':
-        return this.changeOwners(args[0], args[1], 'rm')
-      default:
+    if (action === 'ls' || action === 'list') {
+      await this.ls(args[0])
+    } else if (action === 'add') {
+      await this.changeOwners(args[0], args[1], 'add')
+    } else if (action === 'rm' || action === 'remove') {
+      await this.changeOwners(args[0], args[1], 'rm')
+    } else {
+      throw this.usageError()
+    }
+  }
+
+  async execWorkspaces ([action, ...args], filters) {
+    await this.setWorkspaces(filters)
+    // ls pkg or owner add/rm package
+    if ((action === 'ls' && args.length > 0) || args.length > 1) {
+      const implicitWorkspaces = this.npm.config.get('workspace', 'default')
+      if (implicitWorkspaces.length === 0) {
+        log.warn(`Ignoring specified workspace(s)`)
+      }
+      return this.exec([action, ...args])
+    }
+
+    for (const [name] of this.workspaces) {
+      if (action === 'ls' || action === 'list') {
+        await this.ls(name)
+      } else if (action === 'add') {
+        await this.changeOwners(args[0], name, 'add')
+      } else if (action === 'rm' || action === 'remove') {
+        await this.changeOwners(args[0], name, 'rm')
+      } else {
         throw this.usageError()
+      }
     }
   }
 
   async ls (pkg) {
-    pkg = await this.getPkg(pkg)
+    pkg = await this.getPkg(this.npm.prefix, pkg)
     const spec = npa(pkg)
 
     try {
@@ -91,17 +124,17 @@ class Owner extends BaseCommand {
     }
   }
 
-  async getPkg (pkg) {
+  async getPkg (prefix, pkg) {
     if (!pkg) {
-      if (this.npm.config.get('global')) {
+      if (this.npm.global) {
         throw this.usageError()
       }
-      const pkgName = await readLocalPkgName(this.npm.prefix)
-      if (!pkgName) {
+      const { name } = await readJson(resolve(prefix, 'package.json'))
+      if (!name) {
         throw this.usageError()
       }
 
-      return pkgName
+      return name
     }
     return pkg
   }
@@ -111,7 +144,7 @@ class Owner extends BaseCommand {
       throw this.usageError()
     }
 
-    pkg = await this.getPkg(pkg)
+    pkg = await this.getPkg(this.npm.prefix, pkg)
     log.verbose(`owner ${addOrRm}`, '%s to %s', user, pkg)
 
     const spec = npa(pkg)
@@ -123,15 +156,6 @@ class Owner extends BaseCommand {
     } catch (err) {
       log.error('owner mutate', `Error getting user data for ${user}`)
       throw err
-    }
-
-    if (user && (!u || !u.name || u.error)) {
-      throw Object.assign(
-        new Error(
-          "Couldn't get user data for " + user + ': ' + JSON.stringify(u)
-        ),
-        { code: 'EOWNERUSER' }
-      )
     }
 
     // normalize user data
@@ -177,32 +201,31 @@ class Owner extends BaseCommand {
     }
 
     const dataPath = `/${spec.escapedName}/-rev/${encodeURIComponent(data._rev)}`
-    const res = await otplease(this.npm.flatOptions, opts => {
-      return npmFetch.json(dataPath, {
-        ...opts,
-        method: 'PUT',
-        body: {
-          _id: data._id,
-          _rev: data._rev,
-          maintainers,
-        },
-        spec,
+    try {
+      const res = await otplease(this.npm.flatOptions, opts => {
+        return npmFetch.json(dataPath, {
+          ...opts,
+          method: 'PUT',
+          body: {
+            _id: data._id,
+            _rev: data._rev,
+            maintainers,
+          },
+          spec,
+        })
       })
-    })
-
-    if (!res.error) {
       if (addOrRm === 'add') {
         this.npm.output(`+ ${user} (${spec.name})`)
       } else {
         this.npm.output(`- ${user} (${spec.name})`)
       }
-    } else {
+      return res
+    } catch (err) {
       throw Object.assign(
-        new Error('Failed to update package: ' + JSON.stringify(res)),
+        new Error('Failed to update package: ' + JSON.stringify(err.message)),
         { code: 'EOWNERMUTATE' }
       )
     }
-    return res
   }
 }
 

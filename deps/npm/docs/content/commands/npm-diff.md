@@ -248,6 +248,8 @@ Treat all files as text in `npm diff`.
 
 * Default: false
 * Type: Boolean
+* DEPRECATED: `--global`, `--local` are deprecated. Use `--location=global`
+  instead.
 
 Operates in "global" mode, so that packages are installed into the `prefix`
 folder instead of the current working directory. See
@@ -334,6 +336,8 @@ Include the workspace root when workspaces are enabled for a command.
 When false, specifying individual workspaces via the `workspace` config, or
 all workspaces via the `workspaces` flag, will cause npm to operate only on
 the specified workspaces, and not on the root project.
+
+This value is not exported to the environment for child processes.
 
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->

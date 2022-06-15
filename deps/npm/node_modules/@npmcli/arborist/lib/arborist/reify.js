@@ -1105,7 +1105,8 @@ module.exports = cls => class Reifier extends cls {
       // skip links that only live within node_modules as they are most
       // likely managed by packages we installed, we only want to rebuild
       // unchanged links we directly manage
-      if (node.isLink && node.target.fsTop === tree) {
+      const linkedFromRoot = node.parent === tree || node.target.fsTop === tree
+      if (node.isLink && linkedFromRoot) {
         nodes.push(node)
       }
     }
@@ -1308,7 +1309,7 @@ module.exports = cls => class Reifier extends cls {
     // to only names that are found in this list
     const retrieveUpdatedNodes = names => {
       const filterDirectDependencies = node =>
-        !node.isRoot && node.resolveParent.isRoot
+        !node.isRoot && node.resolveParent && node.resolveParent.isRoot
         && (!names || names.includes(node.name))
         && exactVersion(node) // skip update for exact ranges
 

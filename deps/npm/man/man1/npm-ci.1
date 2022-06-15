@@ -1,6 +1,6 @@
-.TH "NPM\-CI" "1" "March 2022" "" ""
+.TH "NPM\-CI" "1" "May 2022" "" ""
 .SH "NAME"
-\fBnpm-ci\fR \- Install a project with a clean slate
+\fBnpm-ci\fR \- Clean install a project
 .SS Synopsis
 .P
 .RS 2
@@ -17,16 +17,7 @@ it's meant to be used in automated environments such as test platforms,
 continuous integration, and deployment \-\- or any situation where you want
 to make sure you're doing a clean install of your dependencies\.
 .P
-\fBnpm ci\fP will be significantly faster when:
-.RS 0
-.IP \(bu 2
-There is a \fBpackage\-lock\.json\fP or \fBnpm\-shrinkwrap\.json\fP file\.
-.IP \(bu 2
-The \fBnode_modules\fP folder is missing or empty\.
-
-.RE
-.P
-In short, the main differences between using \fBnpm install\fP and \fBnpm ci\fP are:
+The main differences between using \fBnpm install\fP and \fBnpm ci\fP are:
 .RS 0
 .IP \(bu 2
 The project \fBmust\fR have an existing \fBpackage\-lock\.json\fP or
@@ -45,6 +36,14 @@ It will never write to \fBpackage\.json\fP or any of the package\-locks:
 installs are essentially frozen\.
 
 .RE
+.P
+NOTE: If you create your \fBpackage\-lock\.json\fP file by running \fBnpm install\fP
+with flags that can affect the shape of your dependency tree, such as
+\fB\-\-legacy\-peer\-deps\fP or \fB\-\-install\-links\fP, you \fImust\fR provide the same
+flags to \fBnpm ci\fP or you are likely to encounter errors\. An easy way to do
+this is to run, for example,
+\fBnpm config set legacy\-peer\-deps=true \-\-location=project\fP and commit the
+\fB\|\.npmrc\fP file to your repo\.
 .SS Example
 .P
 Make sure you have a package\-lock and an up\-to\-date install:

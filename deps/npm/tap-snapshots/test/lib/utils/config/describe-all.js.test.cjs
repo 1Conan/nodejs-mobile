@@ -12,6 +12,8 @@ exports[`test/lib/utils/config/describe-all.js TAP > must match snapshot 1`] = `
 * Type: null or String
 
 A basic-auth string to use when authenticating against the npm registry.
+This will ONLY be used to authenticate against the npm registry. For other
+registries you will need to scope it like "//other-registry.tld/:_auth"
 
 Warning: This should generally not be set via a command-line option. It is
 safer to use a registry-provided authentication bearer token stored in the
@@ -558,23 +560,6 @@ results in no commit being made at all.
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
 
-#### \`global\`
-
-* Default: false
-* Type: Boolean
-
-Operates in "global" mode, so that packages are installed into the \`prefix\`
-folder instead of the current working directory. See
-[folders](/configuring-npm/folders) for more on the differences in behavior.
-
-* packages are installed into the \`{prefix}/lib/node_modules\` folder, instead
-  of the current working directory.
-* bin files are linked to \`{prefix}/bin\`
-* man pages are linked to \`{prefix}/share/man\`
-
-<!-- automatically generated, do not edit manually -->
-<!-- see lib/utils/config/definitions.js -->
-
 #### \`global-style\`
 
 * Default: false
@@ -636,6 +621,8 @@ it's present and fail if the script fails. This is useful, for example, when
 running scripts that may only apply for some builds in an otherwise generic
 CI setup.
 
+This value is not exported to the environment for child processes.
+
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
 
@@ -692,6 +679,8 @@ Include the workspace root when workspaces are enabled for a command.
 When false, specifying individual workspaces via the \`workspace\` config, or
 all workspaces via the \`workspaces\` flag, will cause npm to operate only on
 the specified workspaces, and not on the root project.
+
+This value is not exported to the environment for child processes.
 
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
@@ -757,6 +746,18 @@ more information, or [npm init](/commands/npm-init).
 
 The value that \`npm init\` should use by default for the package version
 number, if not already set in package.json.
+
+<!-- automatically generated, do not edit manually -->
+<!-- see lib/utils/config/definitions.js -->
+
+#### \`install-links\`
+
+* Default: false
+* Type: Boolean
+
+When set file: protocol dependencies that exist outside of the project root
+will be packed and installed as regular dependencies instead of creating a
+symlink. This option has no effect on workspaces.
 
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
@@ -856,6 +857,15 @@ npm registry. Must be IPv4 in versions of Node prior to 0.12.
 
 When passed to \`npm config\` this refers to which config file to use.
 
+When set to "global" mode, packages are installed into the \`prefix\` folder
+instead of the current working directory. See
+[folders](/configuring-npm/folders) for more on the differences in behavior.
+
+* packages are installed into the \`{prefix}/lib/node_modules\` folder, instead
+  of the current working directory.
+* bin files are linked to \`{prefix}/bin\`
+* man pages are linked to \`{prefix}/share/man\`
+
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
 
@@ -901,12 +911,25 @@ See also the \`foreground-scripts\` config.
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
 
+#### \`logs-dir\`
+
+* Default: A directory named \`_logs\` inside the cache
+* Type: null or Path
+
+The location of npm's log directory. See [\`npm logging\`](/using-npm/logging)
+for more information.
+
+<!-- automatically generated, do not edit manually -->
+<!-- see lib/utils/config/definitions.js -->
+
 #### \`logs-max\`
 
 * Default: 10
 * Type: Number
 
 The maximum number of log files to store.
+
+If set to 0, no log files will be written for the current run.
 
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
@@ -1020,6 +1043,19 @@ variable will be set to \`'production'\` for all lifecycle scripts.
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
 
+#### \`omit-lockfile-registry-resolved\`
+
+* Default: false
+* Type: Boolean
+
+This option causes npm to create lock files without a \`resolved\` key for
+registry dependencies. Subsequent installs will need to resolve tarball
+endpoints with the configured registry, likely resulting in a longer install
+time.
+
+<!-- automatically generated, do not edit manually -->
+<!-- see lib/utils/config/definitions.js -->
+
 #### \`otp\`
 
 * Default: null
@@ -1061,10 +1097,6 @@ The package to install for [\`npm exec\`](/commands/npm-exec)
 
 If set to false, then ignore \`package-lock.json\` files when installing. This
 will also prevent _writing_ \`package-lock.json\` if \`save\` is true.
-
-When package package-locks are disabled, automatic pruning of extraneous
-modules will also be disabled. To remove extraneous modules with
-package-locks disabled use \`npm prune\`.
 
 This configuration does not affect \`npm ci\`.
 
@@ -1204,8 +1236,7 @@ The base URL of the npm registry.
 
 #### \`save\`
 
-* Default: \`true\` unless when using \`npm update\` or \`npm dedupe\` where it
-  defaults to \`false\`
+* Default: \`true\` unless when using \`npm update\` where it defaults to \`false\`
 * Type: Boolean
 
 Save installed packages to a \`package.json\` file as dependencies.
@@ -1502,9 +1533,9 @@ particular, use care when overriding this setting for public packages.
 * Default: false
 * Type: Boolean
 
-If true, writes an \`npm-debug\` log to \`_logs\` and timing information to
-\`_timing.json\`, both in your cache, even if the command completes
-successfully. \`_timing.json\` is a newline delimited list of JSON objects.
+If true, writes a debug log to \`logs-dir\` and timing information to
+\`_timing.json\` in the cache, even if the command completes successfully.
+\`_timing.json\` is a newline delimited list of JSON objects.
 
 You can quickly view it with this [json](https://npm.im/json) command line:
 \`npm exec -- json -g < ~/.npm/_timing.json\`.
@@ -1697,6 +1728,17 @@ This value is not exported to the environment for child processes.
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->
 
+#### \`workspaces-update\`
+
+* Default: true
+* Type: Boolean
+
+If set to true, the npm cli will run an update after operations that may
+possibly change the workspaces installed to the \`node_modules\` folder.
+
+<!-- automatically generated, do not edit manually -->
+<!-- see lib/utils/config/definitions.js -->
+
 #### \`yes\`
 
 * Default: null
@@ -1760,6 +1802,25 @@ What authentication strategy to use with \`adduser\`/\`login\`.
 * DEPRECATED: Please use --include=dev instead.
 
 Alias for \`--include=dev\`.
+
+<!-- automatically generated, do not edit manually -->
+<!-- see lib/utils/config/definitions.js -->
+
+#### \`global\`
+
+* Default: false
+* Type: Boolean
+* DEPRECATED: \`--global\`, \`--local\` are deprecated. Use \`--location=global\`
+  instead.
+
+Operates in "global" mode, so that packages are installed into the \`prefix\`
+folder instead of the current working directory. See
+[folders](/configuring-npm/folders) for more on the differences in behavior.
+
+* packages are installed into the \`{prefix}/lib/node_modules\` folder, instead
+  of the current working directory.
+* bin files are linked to \`{prefix}/bin\`
+* man pages are linked to \`{prefix}/share/man\`
 
 <!-- automatically generated, do not edit manually -->
 <!-- see lib/utils/config/definitions.js -->

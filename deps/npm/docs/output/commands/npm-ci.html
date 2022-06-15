@@ -137,7 +137,7 @@ npm command-line interface
 <section id="content">
 <header class="title">
 <h1 id="npm-ci">npm-ci</h1>
-<span class="description">Install a project with a clean slate</span>
+<span class="description">Clean install a project</span>
 </header>
 
 <section id="table_of_contents">
@@ -161,12 +161,7 @@ aliases: clean-install, ic, install-clean, isntall-clean
 it's meant to be used in automated environments such as test platforms,
 continuous integration, and deployment -- or any situation where you want
 to make sure you're doing a clean install of your dependencies.</p>
-<p><code>npm ci</code> will be significantly faster when:</p>
-<ul>
-<li>There is a <code>package-lock.json</code> or <code>npm-shrinkwrap.json</code> file.</li>
-<li>The <code>node_modules</code> folder is missing or empty.</li>
-</ul>
-<p>In short, the main differences between using <code>npm install</code> and <code>npm ci</code> are:</p>
+<p>The main differences between using <code>npm install</code> and <code>npm ci</code> are:</p>
 <ul>
 <li>The project <strong>must</strong> have an existing <code>package-lock.json</code> or
 <code>npm-shrinkwrap.json</code>.</li>
@@ -179,6 +174,13 @@ before <code>npm ci</code> begins its install.</li>
 <li>It will never write to <code>package.json</code> or any of the package-locks:
 installs are essentially frozen.</li>
 </ul>
+<p>NOTE: If you create your <code>package-lock.json</code> file by running <code>npm install</code>
+with flags that can affect the shape of your dependency tree, such as
+<code>--legacy-peer-deps</code> or <code>--install-links</code>, you <em>must</em> provide the same
+flags to <code>npm ci</code> or you are likely to encounter errors. An easy way to do
+this is to run, for example,
+<code>npm config set legacy-peer-deps=true --location=project</code> and commit the
+<code>.npmrc</code> file to your repo.</p>
 <h3 id="example">Example</h3>
 <p>Make sure you have a package-lock and an up-to-date install:</p>
 <pre lang="bash"><code>$ cd ./my/npm/project
