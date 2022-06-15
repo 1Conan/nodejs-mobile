@@ -25,9 +25,9 @@
       'includes': ['config/archs/linux-elf/asm/openssl-cl.gypi'],
     }, 'target_arch=="x64" and OS=="freebsd"', {
       'includes': ['config/archs/BSD-x86_64/asm/openssl-cl.gypi'],
-    }, 'target_arch=="x64" and OS=="mac"', {
+    }, 'target_arch=="x64" and OS in ("mac", "ios")', {
       'includes': ['config/archs/darwin64-x86_64-cc/asm/openssl-cl.gypi'],
-    }, 'target_arch=="arm64" and OS=="mac"', {
+    }, 'target_arch=="arm64" and OS in ("mac", "ios")', {
       'includes': ['config/archs/darwin64-arm64-cc/asm/openssl-cl.gypi'],
     }, 'target_arch=="x64" and OS=="solaris"', {
       'includes': ['config/archs/solaris64-x86_64-gcc/asm/openssl-cl.gypi'],

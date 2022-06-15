@@ -3,8 +3,12 @@ set -e
 export HOST_ARCH="$(uname -m)"
 export COMPILE_FOR_ARCHS=(
     arm64
-    ${HOST_ARCH}
 )
+
+if [ "${HOST_ARCH}" != "arm64" ]; then
+    COMPILE_FOR_ARCHS+=("${HOST_ARCH}")
+fi
+
 export LIBRARY_FILES=(
     libbrotli.a
     libcares.a
@@ -72,7 +76,6 @@ compile_for_arch() {
         --with-intl=small-icu \
         --cross-compiling \
         --enable-static \
-        --openssl-no-asm \
         --v8-options=--jitless \
         --without-node-code-cache \
         --without-node-snapshot \
