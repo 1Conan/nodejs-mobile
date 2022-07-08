@@ -3,7 +3,7 @@ name: Build NodeMobile.framework
 on:
   push:
     branches:
-      - upstream-node-v16.15.x-ios
+      - node-ios-*
 
 env:
   SCCACHE_VERSION: 0.2.15
