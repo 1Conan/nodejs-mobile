@@ -37,13 +37,14 @@ jobs:
         ./configure \
           --dest-os=ios \
           --dest-cpu=${{ matrix.target }} \
-          --with-intl=small-icu \
+          --with-intl=full-icu \
           --cross-compiling \
           --enable-static \
+          --enable-lto \
           --v8-options=--jitless \
-          --without-node-code-cache \
-          --without-node-snapshot \
-          --v8-disable-webassembly
+          --v8-disable-webassembly \
+          --without-npm \
+          --without-corepack
 
         make -j$(getconf _NPROCESSORS_ONLN)
         mkdir -p ${TARGET_LIBRARY_PATH}
