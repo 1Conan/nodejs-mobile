@@ -32,7 +32,7 @@ jobs:
       run: |
         source ./tools/ios_vars.sh
 
-        if [ "${{ matrix.target}" = "x86_64" ]; then
+        if [ "${{ matrix.target }}" = "x86_64" ]; then
           export SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
         else
           export SDK=$(xcrun --sdk iphoneos --show-sdk-path)
