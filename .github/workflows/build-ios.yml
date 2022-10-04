@@ -35,8 +35,8 @@ jobs:
         export OPTIMIZATION_FLAGS="-miphoneos-version-min=14.0 -Ofast -g -isysroot ${SDKPATH}"
         # Need to define -arch by ourself when we're cross compiling
         # refer to xcode_emulation.py
-        export CC="$(command -v cc) ${OPTIMIZATION_FLAGS} -arch ${TARGET_ARCH}"
-        export CXX="$(command -v c++) ${OPTIMIZATION_FLAGS} -arch ${TARGET_ARCH}"
+        export CC="$(command -v cc) ${OPTIMIZATION_FLAGS} -arch ${{ matrix.target }}"
+        export CXX="$(command -v c++) ${OPTIMIZATION_FLAGS} -arch ${{ matrix.target }}"
         export LINK="${CXX}"
 
         export CC_host="$(command -v cc)  -arch ${HOST_ARCH}"
@@ -51,7 +51,6 @@ jobs:
           --with-intl=full-icu \
           --cross-compiling \
           --enable-static \
-          --enable-lto \
           --v8-options=--jitless \
           --v8-disable-webassembly \
           --without-npm \
