@@ -39,7 +39,7 @@ jobs:
         fi
 
 
-        export OPTIMIZATION_FLAGS="-miphoneos-version-min=14.0 -Ofast -g -isysroot ${SDK}"
+        export OPTIMIZATION_FLAGS="-Ofast -g"
         # Need to define -arch by ourself when we're cross compiling
         # refer to xcode_emulation.py
         export CC="$(command -v cc) ${OPTIMIZATION_FLAGS} -arch ${{ matrix.target }}"
