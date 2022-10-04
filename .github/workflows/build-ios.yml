@@ -32,7 +32,7 @@ jobs:
         export CXX_host="$(command -v c++) -arch ${HOST_ARCH}"
 
         export GYP_DEFINES="host_arch=${{ env.HOST_ARCH }} host_os=mac target_arch=${{ matrix.target }} target_os=ios"
-        export TARGET_LIBRARY_PATH="tools/ios-framework/bin/=${{ matrix.target }}"
+        export TARGET_LIBRARY_PATH="tools/ios-framework/bin/${{ matrix.target }}"
 
         ./configure \
           --dest-os=ios \
