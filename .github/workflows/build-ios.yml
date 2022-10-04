@@ -29,16 +29,15 @@ jobs:
       run: |
         source ./tools/ios_vars.sh
 
-        export OPTIMIZATION_FLAGS="-fuse-ld=mold -miphoneos-version-min=14.0 -Ofast -g -isysroot ${SDKPATH}"
+        export OPTIMIZATION_FLAGS="-miphoneos-version-min=14.0 -Ofast -g -isysroot ${SDKPATH}"
         # Need to define -arch by ourself when we're cross compiling
         # refer to xcode_emulation.py
         export CC="$(command -v cc) ${OPTIMIZATION_FLAGS} -arch ${TARGET_ARCH}"
         export CXX="$(command -v c++) ${OPTIMIZATION_FLAGS} -arch ${TARGET_ARCH}"
         export LINK="${CXX}"
 
-        export CC_host="$(command -v cc) -fuse-ld=mold -arch ${HOST_ARCH}"
-        export CXX_host="$(command -v c++) -fuse-ld=mold -arch ${HOST_ARCH}"
-        export LINK_host="${CXX_host}"
+        export CC_host="$(command -v cc)  -arch ${HOST_ARCH}"
+        export CXX_host="$(command -v c++) -arch ${HOST_ARCH}"
 
         export GYP_DEFINES="host_arch=${{ env.HOST_ARCH }} host_os=mac target_arch=${{ matrix.target }} target_os=ios"
         export TARGET_LIBRARY_PATH="tools/ios-framework/bin/${{ matrix.target }}"
