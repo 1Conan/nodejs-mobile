@@ -2,7 +2,7 @@
 set -e
 export HOST_ARCH="$(uname -m)"
 export COMPILE_FOR_ARCHS=(
-    # arm64
+    arm64
 )
 
 if [ "${HOST_ARCH}" != "arm64" ]; then
@@ -132,8 +132,8 @@ done
 #     lipo_for_archs ${LIB}
 # done
 
-rm -rf out_ios
-mkdir -p out_ios
+# rm -rf out_ios
+# mkdir -p out_ios
 cd out_ios
 FRAMEWORK_TARGET_DIR="${PWD}"
 cd ../

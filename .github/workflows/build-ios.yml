@@ -32,7 +32,14 @@ jobs:
       run: |
         source ./tools/ios_vars.sh
 
-        export OPTIMIZATION_FLAGS="-miphoneos-version-min=14.0 -Ofast -g -isysroot ${SDKPATH}"
+        if [ "${{ matrix.target}" = "x86_64" ]; then
+          export SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+        else
+          export SDK=$(xcrun --sdk iphoneos --show-sdk-path)
+        fi
+
+
+        export OPTIMIZATION_FLAGS="-miphoneos-version-min=14.0 -Ofast -g -isysroot ${SDK}"
         # Need to define -arch by ourself when we're cross compiling
         # refer to xcode_emulation.py
         export CC="$(command -v cc) ${OPTIMIZATION_FLAGS} -arch ${{ matrix.target }}"
