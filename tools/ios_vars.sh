@@ -7,6 +7,9 @@ export LIBRARY_FILES=(
     libbrotli.a
     libcares.a
     libhistogram.a
+    libicudata.a
+    libicui18n.a
+    libicuucx.a
     libllhttp.a
     libnghttp2.a
     libnghttp3.a
@@ -25,8 +28,4 @@ export LIBRARY_FILES=(
     libv8_snapshot.a
     libv8_zlib.a
     libzlib.a
-    libicudata.a
-    libicui18n.a
-    libicustubdata.a
-    libicuucx.a
 )

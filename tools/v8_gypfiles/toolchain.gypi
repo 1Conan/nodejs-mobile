@@ -1279,7 +1279,7 @@
               }],
               ['OS=="mac" or OS=="ios"', {
                 'xcode_settings': {
-                  'GCC_OPTIMIZATION_LEVEL': '3',  # -O3
+                  'GCC_OPTIMIZATION_LEVEL': 'fast',  # -Ofast
                   'GCC_STRICT_ALIASING': 'YES',
                 },
               }],
@@ -1338,7 +1338,7 @@
           }],
           ['OS=="mac" or OS=="ios"', {
             'xcode_settings': {
-              'GCC_OPTIMIZATION_LEVEL': '3',  # -O3
+              'GCC_OPTIMIZATION_LEVEL': 'fast',  # -Ofast
 
               # -fstrict-aliasing.  Mainline gcc
               # enables this at -O2 and above,

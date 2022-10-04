@@ -2,7 +2,7 @@
 set -e
 export HOST_ARCH="$(uname -m)"
 export COMPILE_FOR_ARCHS=(
-    arm64
+    # arm64
 )
 
 if [ "${HOST_ARCH}" != "arm64" ]; then
@@ -13,6 +13,9 @@ export LIBRARY_FILES=(
     libbrotli.a
     libcares.a
     libhistogram.a
+    libicudata.a
+    libicui18n.a
+    libicuucx.a
     libllhttp.a
     libnghttp2.a
     libnghttp3.a
@@ -31,10 +34,6 @@ export LIBRARY_FILES=(
     libv8_snapshot.a
     libv8_zlib.a
     libzlib.a
-    libicudata.a
-    libicui18n.a
-    libicustubdata.a
-    libicuucx.a
 )
 
 ROOT=${PWD}
@@ -49,37 +48,45 @@ export LIBRARY_PATH='out/Release'
 
 compile_for_arch() {
     local TARGET_ARCH=$1
-
     local TARGET_LIBRARY_PATH="tools/ios-framework/bin/${TARGET_ARCH}"
+    local SDKPATH=$(xcrun --sdk iphoneos --show-sdk-path)
 
     export GYP_DEFINES="host_arch=${HOST_ARCH} host_os=mac target_arch=${TARGET_ARCH} target_os=ios"
 
+
+    export OPTIMIZATION_FLAGS="-fuse-ld=mold -miphoneos-version-min=14.0 -Ofast -g -isysroot ${SDKPATH}"
     # Need to define -arch by ourself when we're cross compiling
     # refer to xcode_emulation.py
-    export CC="$(command -v cc) -arch ${TARGET_ARCH}"
-    export CXX="$(command -v c++) -arch ${TARGET_ARCH}"
-    export CC_host="$(command -v cc) -arch ${HOST_ARCH}"
-    export CXX_host="$(command -v c++) -arch ${HOST_ARCH}"
+    export CC="$(command -v cc) ${OPTIMIZATION_FLAGS} -arch ${TARGET_ARCH}"
+    export CXX="$(command -v c++) ${OPTIMIZATION_FLAGS} -arch ${TARGET_ARCH}"
+    export LINK="${CXX}"
+
+    export CC_host="$(command -v cc) -fuse-ld=mold -arch ${HOST_ARCH}"
+    export CXX_host="$(command -v c++) -fuse-ld=mold -arch ${HOST_ARCH}"
+    export LINK_host="${CXX_host}"
 
     if command -v sccache &> /dev/null; then
         export CC="sccache ${CC}"
         export CXX="sccache ${CXX}"
+        export LINK="sccache ${LINK}"
+
         export CC_host="sccache ${CC_host}"
         export CXX_host="sccache ${CXX_host}"
+        export LINK_host="sccache ${LINK_host}"
     fi
 
-    #make clean
+    # make clean
 
     ./configure \
         --dest-os=ios \
         --dest-cpu=${TARGET_ARCH} \
-        --with-intl=small-icu \
+        --with-intl=full-icu \
         --cross-compiling \
         --enable-static \
         --v8-options=--jitless \
-        --without-node-code-cache \
-        --without-node-snapshot \
-        --v8-disable-webassembly
+        --v8-disable-webassembly \
+        --without-npm \
+        --without-corepack
 
     make -j$(getconf _NPROCESSORS_ONLN)
     mkdir -p ${TARGET_LIBRARY_PATH}
