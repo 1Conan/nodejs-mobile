@@ -77,8 +77,6 @@ compile_for_arch() {
         --cross-compiling \
         --enable-static \
         --v8-options=--jitless \
-        --without-node-code-cache \
-        --without-node-snapshot \
         --v8-disable-webassembly
 
     make -j$(getconf _NPROCESSORS_ONLN)
