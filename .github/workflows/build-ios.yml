@@ -60,7 +60,9 @@ jobs:
         run: |
           xcodebuild -create-xcframework \
             -framework out_ios/Release-iphoneos/NodeMobile.framework \
+            -debug-symbols $(pwd)/out_ios/Release-iphoneos/NodeMobile.framework.dSYM \
             -framework out_ios/Release-iphonesimulator/NodeMobile.framework \
+            -debug-symbols $(pwd)/out_ios/Release-iphonesimulator/NodeMobile.framework.dSYM \
             -output out_ios/NodeMobile.xcframework
 
       - name: Upload framework
