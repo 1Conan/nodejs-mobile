@@ -1150,17 +1150,11 @@
             '<(V8_ROOT)/src/base/platform/platform-fuchsia.cc',
           ]
         }],
-        ['OS == "mac" or (_toolset=="host" and host_os=="mac")', {
+        ['OS in ("mac", "ios") or (_toolset=="host" and host_os=="mac")', {
           'sources': [
             '<(V8_ROOT)/src/base/debug/stack_trace_posix.cc',
             '<(V8_ROOT)/src/base/platform/platform-darwin.cc',
             '<(V8_ROOT)/src/base/platform/platform-macos.cc',
-          ]
-        }],
-        ['OS == "ios"', {
-          'sources': [
-            '<(V8_ROOT)/src/base/debug/stack_trace_posix.cc',
-            '<(V8_ROOT)/src/base/platform/platform-darwin.cc',
           ]
         }],
         ['is_win', {
