@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2716FAA729ADCFA000E8E6C5 /* libbase64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FAA529ADCFA000E8E6C5 /* libbase64.a */; };
+		2716FAA829ADCFA000E8E6C5 /* libbase64_neon64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FAA629ADCFA000E8E6C5 /* libbase64_neon64.a */; };
 		27A1919827CA2EE800DF8360 /* libhistogram.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A1919727CA2EE800DF8360 /* libhistogram.a */; };
 		27A1919A27CA2EF300DF8360 /* libuvwasi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A1919927CA2EF300DF8360 /* libuvwasi.a */; };
 		27A1919C27CA2EFC00DF8360 /* libnode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A1919B27CA2EFC00DF8360 /* libnode.a */; };
@@ -36,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2716FAA529ADCFA000E8E6C5 /* libbase64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbase64.a; path = bin/libbase64.a; sourceTree = "<group>"; };
+		2716FAA629ADCFA000E8E6C5 /* libbase64_neon64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbase64_neon64.a; path = bin/libbase64_neon64.a; sourceTree = "<group>"; };
 		27A1919727CA2EE800DF8360 /* libhistogram.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhistogram.a; path = bin/libhistogram.a; sourceTree = "<group>"; };
 		27A1919927CA2EF300DF8360 /* libuvwasi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libuvwasi.a; path = bin/libuvwasi.a; sourceTree = "<group>"; };
 		27A1919B27CA2EFC00DF8360 /* libnode.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnode.a; path = bin/libnode.a; sourceTree = "<group>"; };
@@ -81,9 +85,11 @@
 				2AEB53D027D3BB3500B48104 /* libicustubdata.a in Frameworks */,
 				27A191A427CA2F1D00DF8360 /* libllhttp.a in Frameworks */,
 				27A191A627CA2F2300DF8360 /* libcares.a in Frameworks */,
+				2716FAA729ADCFA000E8E6C5 /* libbase64.a in Frameworks */,
 				2AEB53CE27D3BB3500B48104 /* libicui18n.a in Frameworks */,
 				27A191A827CA2F2B00DF8360 /* libuv.a in Frameworks */,
 				27A191AA27CA2F3200DF8360 /* libnghttp2.a in Frameworks */,
+				2716FAA829ADCFA000E8E6C5 /* libbase64_neon64.a in Frameworks */,
 				27A191AC27CA2F3A00DF8360 /* libbrotli.a in Frameworks */,
 				27A191AE27CA2F4400DF8360 /* libopenssl.a in Frameworks */,
 				27A191B027CA2F4C00DF8360 /* libngtcp2.a in Frameworks */,
@@ -122,6 +128,8 @@
 			isa = PBXGroup;
 			children = (
 				27A1919727CA2EE800DF8360 /* libhistogram.a */,
+				2716FAA629ADCFA000E8E6C5 /* libbase64_neon64.a */,
+				2716FAA529ADCFA000E8E6C5 /* libbase64.a */,
 				27A1919927CA2EF300DF8360 /* libuvwasi.a */,
 				27A1919B27CA2EFC00DF8360 /* libnode.a */,
 				27A1919D27CA2F0200DF8360 /* libv8_snapshot.a */,

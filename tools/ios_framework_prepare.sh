@@ -10,6 +10,8 @@ if [ "${HOST_ARCH}" != "arm64" ]; then
 fi
 
 export LIBRARY_FILES=(
+    libbase64.a
+    libbase64_neon64.a
     libbrotli.a
     libcares.a
     libhistogram.a
@@ -76,8 +78,7 @@ compile_for_arch() {
         --with-intl=small-icu \
         --cross-compiling \
         --enable-static \
-        --v8-options=--jitless \
-        --v8-disable-webassembly
+        --v8-options=--jitless
 
     make -j$(getconf _NPROCESSORS_ONLN)
     mkdir -p ${TARGET_LIBRARY_PATH}
