@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2716FA9E29AD897700E8E6C5 /* libsimdutf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FA9D29AD897700E8E6C5 /* libsimdutf.a */; };
+		2716FAA029AD898B00E8E6C5 /* libbase64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FA9F29AD898B00E8E6C5 /* libbase64.a */; };
+		2716FAA229AD899100E8E6C5 /* libzlib_inflate_chunk_simd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FAA129AD899100E8E6C5 /* libzlib_inflate_chunk_simd.a */; };
+		2716FAA429AD89A200E8E6C5 /* libbase64_neon64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FAA329AD89A200E8E6C5 /* libbase64_neon64.a */; };
 		27A1919827CA2EE800DF8360 /* libhistogram.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A1919727CA2EE800DF8360 /* libhistogram.a */; };
 		27A1919A27CA2EF300DF8360 /* libuvwasi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A1919927CA2EF300DF8360 /* libuvwasi.a */; };
 		27A1919C27CA2EFC00DF8360 /* libnode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A1919B27CA2EFC00DF8360 /* libnode.a */; };
@@ -36,6 +40,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2716FA9D29AD897700E8E6C5 /* libsimdutf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsimdutf.a; path = bin/libsimdutf.a; sourceTree = "<group>"; };
+		2716FA9F29AD898B00E8E6C5 /* libbase64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbase64.a; path = bin/libbase64.a; sourceTree = "<group>"; };
+		2716FAA129AD899100E8E6C5 /* libzlib_inflate_chunk_simd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlib_inflate_chunk_simd.a; path = bin/libzlib_inflate_chunk_simd.a; sourceTree = "<group>"; };
+		2716FAA329AD89A200E8E6C5 /* libbase64_neon64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbase64_neon64.a; path = bin/libbase64_neon64.a; sourceTree = "<group>"; };
 		27A1919727CA2EE800DF8360 /* libhistogram.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhistogram.a; path = bin/libhistogram.a; sourceTree = "<group>"; };
 		27A1919927CA2EF300DF8360 /* libuvwasi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libuvwasi.a; path = bin/libuvwasi.a; sourceTree = "<group>"; };
 		27A1919B27CA2EFC00DF8360 /* libnode.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnode.a; path = bin/libnode.a; sourceTree = "<group>"; };
@@ -73,6 +81,7 @@
 			files = (
 				27A1919827CA2EE800DF8360 /* libhistogram.a in Frameworks */,
 				27A1919A27CA2EF300DF8360 /* libuvwasi.a in Frameworks */,
+				2716FAA029AD898B00E8E6C5 /* libbase64.a in Frameworks */,
 				27A1919C27CA2EFC00DF8360 /* libnode.a in Frameworks */,
 				27A1919E27CA2F0200DF8360 /* libv8_snapshot.a in Frameworks */,
 				2AEB53CD27D3BB3500B48104 /* libicudata.a in Frameworks */,
@@ -80,8 +89,11 @@
 				27A191A227CA2F1200DF8360 /* libzlib.a in Frameworks */,
 				2AEB53D027D3BB3500B48104 /* libicustubdata.a in Frameworks */,
 				27A191A427CA2F1D00DF8360 /* libllhttp.a in Frameworks */,
+				2716FAA229AD899100E8E6C5 /* libzlib_inflate_chunk_simd.a in Frameworks */,
 				27A191A627CA2F2300DF8360 /* libcares.a in Frameworks */,
 				2AEB53CE27D3BB3500B48104 /* libicui18n.a in Frameworks */,
+				2716FA9E29AD897700E8E6C5 /* libsimdutf.a in Frameworks */,
+				2716FAA429AD89A200E8E6C5 /* libbase64_neon64.a in Frameworks */,
 				27A191A827CA2F2B00DF8360 /* libuv.a in Frameworks */,
 				27A191AA27CA2F3200DF8360 /* libnghttp2.a in Frameworks */,
 				27A191AC27CA2F3A00DF8360 /* libbrotli.a in Frameworks */,
@@ -121,8 +133,11 @@
 		3376C9181EC3922E0007AD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2716FAA329AD89A200E8E6C5 /* libbase64_neon64.a */,
+				2716FA9F29AD898B00E8E6C5 /* libbase64.a */,
 				27A1919727CA2EE800DF8360 /* libhistogram.a */,
 				27A1919927CA2EF300DF8360 /* libuvwasi.a */,
+				2716FA9D29AD897700E8E6C5 /* libsimdutf.a */,
 				27A1919B27CA2EFC00DF8360 /* libnode.a */,
 				27A1919D27CA2F0200DF8360 /* libv8_snapshot.a */,
 				27A1919F27CA2F0D00DF8360 /* libv8_libplatform.a */,
@@ -144,6 +159,7 @@
 				27A191B727CA2F6900DF8360 /* libv8_zlib.a */,
 				27A191BB27CA31C200DF8360 /* libv8_compiler.a */,
 				27A191B927CA2F7300DF8360 /* libv8_initializers.a */,
+				2716FAA129AD899100E8E6C5 /* libzlib_inflate_chunk_simd.a */,
 				331917C21EC4702A00F93D52 /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
@@ -373,7 +389,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NodeMobile/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -411,7 +427,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NodeMobile/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

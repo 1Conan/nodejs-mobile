@@ -438,7 +438,7 @@ void OS::Free(void* address, size_t size) {
 }
 
 // macOS specific implementation in platform-macos.cc.
-#if !defined(V8_OS_MACOS)
+#if defined(V8_OS_IOS) || !defined(V8_OS_MACOS)
 // static
 void* OS::AllocateShared(void* hint, size_t size, MemoryPermission access,
                          PlatformSharedMemoryHandle handle, uint64_t offset) {
@@ -576,7 +576,7 @@ void OS::FreeAddressSpaceReservation(AddressSpaceReservation reservation) {
 }
 
 // macOS specific implementation in platform-macos.cc.
-#if !defined(V8_OS_MACOS)
+#if defined(V8_OS_IOS) || !defined(V8_OS_MACOS)
 // static
 // Need to disable CFI_ICALL due to the indirect call to memfd_create.
 DISABLE_CFI_ICALL
@@ -947,7 +947,7 @@ bool AddressSpaceReservation::Free(void* address, size_t size) {
 }
 
 // macOS specific implementation in platform-macos.cc.
-#if !defined(V8_OS_MACOS)
+#if defined(V8_OS_IOS) || !defined(V8_OS_MACOS)
 bool AddressSpaceReservation::AllocateShared(void* address, size_t size,
                                              OS::MemoryPermission access,
                                              PlatformSharedMemoryHandle handle,

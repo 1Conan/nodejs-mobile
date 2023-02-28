@@ -556,7 +556,7 @@
           'GCC_ENABLE_CPP_RTTI': 'NO',              # -fno-rtti
           'GCC_ENABLE_PASCAL_STRINGS': 'NO',        # No -mpascal-strings
           'PREBINDING': 'NO',                       # No -Wl,-prebind
-          'IPHONEOS_DEPLOYMENT_TARGET': '12.0',     # -iphoneos-version-min=12.0
+          'IPHONEOS_DEPLOYMENT_TARGET': '15.0',     # -iphoneos-version-min=15.0
           'USE_HEADERMAP': 'NO',
           'OTHER_CFLAGS': [
             '-fno-strict-aliasing',
@@ -573,7 +573,7 @@
             'xcode_settings': {
               'SDKROOT': '',
               'IPHONEOS_DEPLOYMENT_TARGET': '',
-              'MACOSX_DEPLOYMENT_TARGET': '10.10',
+              'MACOSX_DEPLOYMENT_TARGET': '11.0',
             },
             'conditions': [
               ['target_arch=="arm64" and host_arch=="x86_64"', {
@@ -599,33 +599,20 @@
           ['target_arch=="x64"', {
             'xcode_settings': {'ARCHS': ['x86_64']},
           }],
-          ['target_arch=="arm"', {
-            'xcode_settings': {'ARCHS': ['armv7']},
-          }],
-          ['target_arch=="armv7s"', {
-            'xcode_settings': {'ARCHS': ['armv7s']},
-          }],
           ['target_arch=="arm64"', {
             'xcode_settings': {'ARCHS': ['arm64']},
-          }],
-          ['target_arch in "arm arm7s arm64"', {
-            'xcode_settings': {
-              'OTHER_CFLAGS': ['-fembed-bitcode'],
-              'OTHER_CPLUSPLUSFLAGS': ['-fembed-bitcode'],
-            },
           }],
           ['target_arch in "ia32 x64"', {
             'xcode_settings': {'SDKROOT': 'iphonesimulator'},
           }, {
             'xcode_settings': {
               'SDKROOT': 'iphoneos',
-              'ENABLE_BITCODE': 'YES',
             },
           }],
           ['clang==1', {
             'xcode_settings': {
               'GCC_VERSION': 'com.apple.compilers.llvm.clang.1_0',
-              'CLANG_CXX_LANGUAGE_STANDARD': 'gnu++14',  # -std=gnu++14
+              'CLANG_CXX_LANGUAGE_STANDARD': 'gnu++17',  # -std=gnu++17
               'CLANG_CXX_LIBRARY': 'libc++',
             },
           }],

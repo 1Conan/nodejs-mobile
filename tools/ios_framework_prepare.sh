@@ -10,6 +10,8 @@ if [ "${HOST_ARCH}" != "arm64" ]; then
 fi
 
 export LIBRARY_FILES=(
+    libbase64.a
+    libbase64_neon64.a
     libbrotli.a
     libcares.a
     libhistogram.a
@@ -17,6 +19,7 @@ export LIBRARY_FILES=(
     libnghttp2.a
     libnghttp3.a
     libngtcp2.a
+    libsimdutf.a
     libnode.a
     libopenssl.a
     libtorque_base.a
@@ -31,6 +34,7 @@ export LIBRARY_FILES=(
     libv8_snapshot.a
     libv8_zlib.a
     libzlib.a
+    libzlib_inflate_chunk_simd.a
     libicudata.a
     libicui18n.a
     libicustubdata.a
@@ -76,8 +80,7 @@ compile_for_arch() {
         --with-intl=small-icu \
         --cross-compiling \
         --enable-static \
-        --v8-options=--jitless \
-        --v8-disable-webassembly
+        --v8-options=--jitless
 
     make -j$(getconf _NPROCESSORS_ONLN)
     mkdir -p ${TARGET_LIBRARY_PATH}

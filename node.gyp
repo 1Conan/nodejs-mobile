@@ -329,14 +329,6 @@
               ],
             },
           ],
-        }, {
-         'conditions': [
-            [ 'not (node_target_type=="static_library" and OS=="ios")', {
-              'sources': [
-                'src/node_code_cache_stub.cc'
-              ],
-            }],
-          ],
         }],
         ['node_use_node_snapshot=="true"', {
           'dependencies': [
@@ -766,7 +758,6 @@
         ['node_target_type=="static_library" and OS=="ios"', {
           'sources': [
             'src/node_snapshot_stub.cc',
-            'src/node_code_cache_stub.cc',
           ]
         }],
         [ 'node_shared=="true" and node_module_version!="" and OS!="win"', {
