@@ -3,14 +3,14 @@ name: Build NodeMobile.framework
 on:
   push:
     branches:
-      - upstream-node-v16.14.x-ios
+      - node-ios-v18
 
 env:
   SCCACHE_VERSION: 0.2.15
 
 jobs:
   build-ios:
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
