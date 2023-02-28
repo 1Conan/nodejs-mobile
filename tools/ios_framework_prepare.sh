@@ -5,9 +5,9 @@ export COMPILE_FOR_ARCHS=(
     arm64
 )
 
-if [ "${HOST_ARCH}" != "arm64" ]; then
-    COMPILE_FOR_ARCHS+=("${HOST_ARCH}")
-fi
+# if [ "${HOST_ARCH}" != "arm64" ]; then
+#     COMPILE_FOR_ARCHS+=("${HOST_ARCH}")
+# fi
 
 export LIBRARY_FILES=(
     libbase64.a
