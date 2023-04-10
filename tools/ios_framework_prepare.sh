@@ -80,6 +80,14 @@ compile_for_arch() {
         --with-intl=small-icu \
         --cross-compiling \
         --enable-static \
+        --enable-lto \
+        --shared-zlib \
+        --with-arm-float-abi=hard \
+        --with-arm-fpu=neon \
+        --without-etw \
+        --without-dtrace \
+        --without-npm \
+        --without-corepack \
         --v8-options=--jitless
 
     make -j$(getconf _NPROCESSORS_ONLN)

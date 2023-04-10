@@ -817,13 +817,13 @@ parser.add_argument('--v8-lite-mode',
 parser.add_argument('--v8-enable-object-print',
     action='store_true',
     dest='v8_enable_object_print',
-    default=True,
+    default=False,
     help='compile V8 with auxiliary functions for native debuggers')
 
 parser.add_argument('--v8-disable-object-print',
     action='store_true',
     dest='v8_disable_object_print',
-    default=False,
+    default=True,
     help='disable the V8 auxiliary functions for native debuggers')
 
 parser.add_argument('--v8-enable-hugepage',
