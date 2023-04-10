@@ -916,7 +916,7 @@ class XcodeSettings:
         for ldflag in self._Settings().get("OTHER_LDFLAGS", []):
             ldflags.append(self._MapLinkerFlagFilename(ldflag, gyp_to_build_path))
 
-        if self._Test("DEAD_CODE_STRIPPING", "YES", default="NO"):
+        if self._Test("DEAD_CODE_STRIPPING", "YES", default="YES"):
             ldflags.append("-Wl,-dead_strip")
 
         if self._Test("PREBINDING", "YES", default="NO"):
