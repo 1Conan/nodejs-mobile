@@ -395,6 +395,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
 				);
+				LLVM_LTO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -433,6 +434,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
 				);
+				LLVM_LTO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-all_load",
