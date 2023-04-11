@@ -559,6 +559,8 @@
           'IPHONEOS_DEPLOYMENT_TARGET': '15.0',     # -iphoneos-version-min=15.0
           'USE_HEADERMAP': 'NO',
           'OTHER_CFLAGS': [
+            '-ffunction-sections',
+            '-fdata-sections',
             '-fno-strict-aliasing',
             '-Wl,-dead_strip',
           ],
