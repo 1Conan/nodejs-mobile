@@ -180,7 +180,7 @@
             }],
           ],
         },
-        'cflags': [ '-O3' ],
+        'cflags': [ '-Os' ],
         'conditions': [
           ['enable_lto=="true"', {
             'cflags': ['<(lto)'],
@@ -252,7 +252,7 @@
           }
         },
         'xcode_settings': {
-          'GCC_OPTIMIZATION_LEVEL': '3', # stop gyp from defaulting to -Os
+          'GCC_OPTIMIZATION_LEVEL': 's', # stop gyp from defaulting to -Os
         },
       }
     },
@@ -560,6 +560,7 @@
           'USE_HEADERMAP': 'NO',
           'OTHER_CFLAGS': [
             '-fno-strict-aliasing',
+            '-Wl,-dead_strip',
           ],
           'WARNING_CFLAGS': [
             '-Wall',

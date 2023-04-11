@@ -77,18 +77,21 @@ compile_for_arch() {
     ./configure \
         --dest-os=ios \
         --dest-cpu=${TARGET_ARCH} \
-        --with-intl=small-icu \
         --cross-compiling \
         --enable-static \
-        --enable-lto \
-        --shared-zlib \
-        --with-arm-float-abi=hard \
-        --with-arm-fpu=neon \
         --without-etw \
         --without-dtrace \
         --without-npm \
         --without-corepack \
-        --v8-options=--jitless
+        --without-inspector \
+        --without-node-options \
+        --without-node-snapshot \
+        --without-node-code-cache \
+        --with-arm-float-abi=hard \
+        --with-arm-fpu=neon \
+        --with-intl=small-icu \
+        --v8-options=--jitless \
+        --v8-disable-object-print
 
     make -j$(getconf _NPROCESSORS_ONLN)
     mkdir -p ${TARGET_LIBRARY_PATH}
