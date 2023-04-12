@@ -608,7 +608,7 @@ class XcodeSettings:
         if self._Test("GCC_ENABLE_PASCAL_STRINGS", "YES", default="YES"):
             cflags.append("-mpascal-strings")
 
-        self._Appendf(cflags, "GCC_OPTIMIZATION_LEVEL", "-O%s", default="s")
+        self._Appendf(cflags, "GCC_OPTIMIZATION_LEVEL", "-O%s", default="3")
 
         if self._Test("GCC_GENERATE_DEBUGGING_SYMBOLS", "YES", default="YES"):
             dbg_format = self._Settings().get("DEBUG_INFORMATION_FORMAT", "dwarf")
@@ -639,7 +639,7 @@ class XcodeSettings:
         # llvm-gcc. It also requires a fairly recent libtool, and
         # if the system clang isn't used, DYLD_LIBRARY_PATH needs to contain the
         # path to the libLTO.dylib that matches the used clang.
-        if self._Test("LLVM_LTO", "YES", default="NO"):
+        if self._Test("LLVM_LTO", "YES", default="YES"):
             cflags.append("-flto")
 
         self._AppendPlatformVersionMinFlags(cflags)

@@ -159,7 +159,7 @@
           },
         },
         'xcode_settings': {
-          'GCC_OPTIMIZATION_LEVEL': '0', # stop gyp from defaulting to -Os
+          'GCC_OPTIMIZATION_LEVEL': '0', # stop gyp from defaulting to -O3
         },
       },
       'Release': {
@@ -180,7 +180,7 @@
             }],
           ],
         },
-        'cflags': [ '-Os' ],
+        'cflags': [ '-O3' ],
         'conditions': [
           ['enable_lto=="true"', {
             'cflags': ['<(lto)'],
@@ -252,7 +252,7 @@
           }
         },
         'xcode_settings': {
-          'GCC_OPTIMIZATION_LEVEL': 's', # stop gyp from defaulting to -Os
+          'GCC_OPTIMIZATION_LEVEL': 's', # stop gyp from defaulting to -O3
         },
       }
     },
@@ -558,6 +558,8 @@
           'PREBINDING': 'NO',                       # No -Wl,-prebind
           'IPHONEOS_DEPLOYMENT_TARGET': '15.0',     # -iphoneos-version-min=15.0
           'USE_HEADERMAP': 'NO',
+          'DEAD_CODE_STRIPPING': 'YES',
+          'LLVM_LTO': 'YES',
           'OTHER_CFLAGS': [
             '-ffunction-sections',
             '-fdata-sections',

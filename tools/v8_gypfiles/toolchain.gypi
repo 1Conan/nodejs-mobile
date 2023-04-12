@@ -1275,10 +1275,10 @@
                   # Don't use -O3 with sanitizers.
                   ['asan==0 and msan==0 and lsan==0 \
                 and tsan==0 and ubsan==0 and ubsan_vptr==0', {
-                    'cflags': ['-Os'],
+                    'cflags': ['-O3'],
                     'cflags!': ['-O2'],
                   }, {
-                     'cflags': ['-Os'],
+                     'cflags': ['-O2'],
                      'cflags!': ['-O3'],
                    }],
                 ],
@@ -1323,10 +1323,10 @@
               # Don't use -O3 with sanitizers.
               ['asan==0 and msan==0 and lsan==0 \
                 and tsan==0 and ubsan==0 and ubsan_vptr==0', {
-                'cflags': ['-Os'],
+                'cflags': ['-O3'],
                 'cflags!': ['-O2'],
               }, {
-                'cflags': ['-Os'],
+                'cflags': ['-O2'],
                 'cflags!': ['-O3'],
               }],
             ],
@@ -1344,7 +1344,7 @@
           }],
           ['OS=="mac" or OS=="ios"', {
             'xcode_settings': {
-              'GCC_OPTIMIZATION_LEVEL': 's',  # -Os
+              'GCC_OPTIMIZATION_LEVEL': '3',  # -O3
 
               # -fstrict-aliasing.  Mainline gcc
               # enables this at -O2 and above,
