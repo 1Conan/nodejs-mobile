@@ -85,9 +85,6 @@ compile_for_arch() {
         --without-npm \
         --without-corepack \
         --without-inspector \
-        --without-node-options \
-        --without-node-snapshot \
-        --without-node-code-cache \
         --with-arm-float-abi=hard \
         --with-arm-fpu=neon \
         --with-intl=small-icu \
