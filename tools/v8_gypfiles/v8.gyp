@@ -1073,7 +1073,7 @@
             '<(V8_ROOT)/src/base/platform/platform-posix.h',
           ],
           'conditions': [
-            ['OS != "aix" and OS != "solaris"', {
+            ['OS != "aix" and OS != "os400" and OS != "solaris"', {
               'sources': [
                 '<(V8_ROOT)/src/base/platform/platform-posix-time.cc',
                 '<(V8_ROOT)/src/base/platform/platform-posix-time.h',
@@ -1093,7 +1093,7 @@
             ],
           },
         }],
-        ['OS=="aix"', {
+        ['OS in "aix os400"', {
           'variables': {
             # Used to differentiate `AIX` and `OS400`(IBM i).
             'aix_variant_name': '<!(uname -s)',

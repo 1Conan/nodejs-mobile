@@ -288,12 +288,12 @@ VFileMessage.prototype.source = null;
 VFileMessage.prototype.ruleId = null;
 VFileMessage.prototype.position = null;
 
-function isUrl(fileURLOrPath) {
+function isUrl(fileUrlOrPath) {
   return (
-    fileURLOrPath !== null &&
-    typeof fileURLOrPath === 'object' &&
-    fileURLOrPath.href &&
-    fileURLOrPath.origin
+    fileUrlOrPath !== null &&
+    typeof fileUrlOrPath === 'object' &&
+    fileUrlOrPath.href &&
+    fileUrlOrPath.origin
   )
 }
 
@@ -303,7 +303,7 @@ class VFile {
     let options;
     if (!value) {
       options = {};
-    } else if (typeof value === 'string' || isBuffer(value)) {
+    } else if (typeof value === 'string' || buffer(value)) {
       options = {value};
     } else if (isUrl(value)) {
       options = {path: value};
@@ -321,13 +321,19 @@ class VFile {
     let index = -1;
     while (++index < order.length) {
       const prop = order[index];
-      if (prop in options && options[prop] !== undefined) {
+      if (
+        prop in options &&
+        options[prop] !== undefined &&
+        options[prop] !== null
+      ) {
         this[prop] = prop === 'history' ? [...options[prop]] : options[prop];
       }
     }
     let prop;
     for (prop in options) {
-      if (!order.includes(prop)) this[prop] = options[prop];
+      if (!order.includes(prop)) {
+        this[prop] = options[prop];
+      }
     }
   }
   get path() {
@@ -384,7 +390,7 @@ class VFile {
     this.path = path$1.join(this.dirname || '', stem + (this.extname || ''));
   }
   toString(encoding) {
-    return (this.value || '').toString(encoding)
+    return (this.value || '').toString(encoding || undefined)
   }
   message(reason, place, origin) {
     const message = new VFileMessage(reason, place, origin);
@@ -423,6 +429,9 @@ function assertPath(path, name) {
   if (!path) {
     throw new Error('Setting `' + name + '` requires `path` to be set too')
   }
+}
+function buffer(value) {
+  return isBuffer(value)
 }
 
 const unified = base().freeze();
@@ -10944,7 +10953,7 @@ function findUrl(_, protocol, domain, path, match) {
 function findEmail(_, atext, label, match) {
   if (
     !previous(match, true) ||
-    /[_-\d]$/.test(label)
+    /[-\d_]$/.test(label)
   ) {
     return false
   }
@@ -10972,22 +10981,19 @@ function isCorrectDomain(domain) {
 }
 function splitUrl(url) {
   const trailExec = /[!"&'),.:;<>?\]}]+$/.exec(url);
-  let closingParenIndex;
-  let openingParens;
-  let closingParens;
-  let trail;
-  if (trailExec) {
-    url = url.slice(0, trailExec.index);
-    trail = trailExec[0];
+  if (!trailExec) {
+    return [url, undefined]
+  }
+  url = url.slice(0, trailExec.index);
+  let trail = trailExec[0];
+  let closingParenIndex = trail.indexOf(')');
+  const openingParens = ccount(url, '(');
+  let closingParens = ccount(url, ')');
+  while (closingParenIndex !== -1 && openingParens > closingParens) {
+    url += trail.slice(0, closingParenIndex + 1);
+    trail = trail.slice(closingParenIndex + 1);
     closingParenIndex = trail.indexOf(')');
-    openingParens = ccount(url, '(');
-    closingParens = ccount(url, ')');
-    while (closingParenIndex !== -1 && openingParens > closingParens) {
-      url += trail.slice(0, closingParenIndex + 1);
-      trail = trail.slice(closingParenIndex + 1);
-      closingParenIndex = trail.indexOf(')');
-      closingParens++;
-    }
+    closingParens++;
   }
   return [url, trail]
 }
@@ -11115,11 +11121,6 @@ function map$1(line, index, blank) {
   return (blank ? '' : '    ') + line
 }
 
-const gfmStrikethroughFromMarkdown = {
-  canContainEols: ['delete'],
-  enter: {strikethrough: enterStrikethrough},
-  exit: {strikethrough: exitStrikethrough}
-};
 const constructsWithoutStrikethrough = [
   'autolink',
   'destinationLiteral',
@@ -11128,6 +11129,12 @@ const constructsWithoutStrikethrough = [
   'titleQuote',
   'titleApostrophe'
 ];
+handleDelete.peek = peekDelete;
+const gfmStrikethroughFromMarkdown = {
+  canContainEols: ['delete'],
+  enter: {strikethrough: enterStrikethrough},
+  exit: {strikethrough: exitStrikethrough}
+};
 const gfmStrikethroughToMarkdown = {
   unsafe: [
     {
@@ -11138,7 +11145,6 @@ const gfmStrikethroughToMarkdown = {
   ],
   handlers: {delete: handleDelete}
 };
-handleDelete.peek = peekDelete;
 function enterStrikethrough(token) {
   this.enter({type: 'delete', children: []}, token);
 }
@@ -11147,7 +11153,7 @@ function exitStrikethrough(token) {
 }
 function handleDelete(node, _, context, safeOptions) {
   const tracker = track(safeOptions);
-  const exit = context.enter('emphasis');
+  const exit = context.enter('strikethrough');
   let value = tracker.move('~~');
   value += containerPhrasing(node, context, {
     ...tracker.current(),
@@ -11576,22 +11582,26 @@ function remarkGfm(options = {}) {
 }
 
 function location(file) {
-  var value = String(file);
-  var indices = [];
-  var search = /\r?\n|\r/g;
+  const value = String(file);
+  const indices = [];
+  const search = /\r?\n|\r/g;
   while (search.test(value)) {
     indices.push(search.lastIndex);
   }
   indices.push(value.length + 1);
   return {toPoint, toOffset}
   function toPoint(offset) {
-    var index = -1;
-    if (offset > -1 && offset < indices[indices.length - 1]) {
+    let index = -1;
+    if (
+      typeof offset === 'number' &&
+      offset > -1 &&
+      offset < indices[indices.length - 1]
+    ) {
       while (++index < indices.length) {
         if (indices[index] > offset) {
           return {
             line: index + 1,
-            column: offset - (indices[index - 1] || 0) + 1,
+            column: offset - (index > 0 ? indices[index - 1] : 0) + 1,
             offset
           }
         }
@@ -11600,9 +11610,8 @@ function location(file) {
     return {line: undefined, column: undefined, offset: undefined}
   }
   function toOffset(point) {
-    var line = point && point.line;
-    var column = point && point.column;
-    var offset;
+    const line = point && point.line;
+    const column = point && point.column;
     if (
       typeof line === 'number' &&
       typeof column === 'number' &&
@@ -11610,9 +11619,12 @@ function location(file) {
       !Number.isNaN(column) &&
       line - 1 in indices
     ) {
-      offset = (indices[line - 2] || 0) + column - 1 || 0;
+      const offset = (indices[line - 2] || 0) + column - 1 || 0;
+      if (offset > -1 && offset < indices[indices.length - 1]) {
+        return offset
+      }
     }
-    return offset > -1 && offset < indices[indices.length - 1] ? offset : -1
+    return -1
   }
 }
 
@@ -19444,7 +19456,7 @@ const { compareIdentifiers } = identifiers;
 let SemVer$2 = class SemVer {
   constructor (version, options) {
     options = parseOptions$1(options);
-    if (version instanceof SemVer$2) {
+    if (version instanceof SemVer) {
       if (version.loose === !!options.loose &&
           version.includePrerelease === !!options.includePrerelease) {
         return version
@@ -19508,11 +19520,11 @@ let SemVer$2 = class SemVer {
   }
   compare (other) {
     debug('SemVer.compare', this.version, this.options, other);
-    if (!(other instanceof SemVer$2)) {
+    if (!(other instanceof SemVer)) {
       if (typeof other === 'string' && other === this.version) {
         return 0
       }
-      other = new SemVer$2(other, this.options);
+      other = new SemVer(other, this.options);
     }
     if (other.version === this.version) {
       return 0
@@ -19520,8 +19532,8 @@ let SemVer$2 = class SemVer {
     return this.compareMain(other) || this.comparePre(other)
   }
   compareMain (other) {
-    if (!(other instanceof SemVer$2)) {
-      other = new SemVer$2(other, this.options);
+    if (!(other instanceof SemVer)) {
+      other = new SemVer(other, this.options);
     }
     return (
       compareIdentifiers(this.major, other.major) ||
@@ -19530,8 +19542,8 @@ let SemVer$2 = class SemVer {
     )
   }
   comparePre (other) {
-    if (!(other instanceof SemVer$2)) {
-      other = new SemVer$2(other, this.options);
+    if (!(other instanceof SemVer)) {
+      other = new SemVer(other, this.options);
     }
     if (this.prerelease.length && !other.prerelease.length) {
       return -1
@@ -19559,8 +19571,8 @@ let SemVer$2 = class SemVer {
     } while (++i)
   }
   compareBuild (other) {
-    if (!(other instanceof SemVer$2)) {
-      other = new SemVer$2(other, this.options);
+    if (!(other instanceof SemVer)) {
+      other = new SemVer(other, this.options);
     }
     let i = 0;
     do {
@@ -20795,13 +20807,16 @@ const settings = {
 };
 const remarkPresetLintNode = { plugins, settings };
 
-function toVFile(options) {
-  if (typeof options === 'string' || options instanceof URL$1) {
-    options = {path: options};
-  } else if (isBuffer(options)) {
-    options = {path: String(options)};
+function toVFile(description) {
+  if (typeof description === 'string' || description instanceof URL$1) {
+    description = {path: description};
+  } else if (isBuffer(description)) {
+    description = {path: String(description)};
   }
-  return looksLikeAVFile(options) ? options : new VFile(options)
+  return looksLikeAVFile(description)
+    ? description
+    :
+      new VFile(description || undefined)
 }
 function readSync(description, options) {
   const file = toVFile(description);
@@ -20833,7 +20848,8 @@ const read =
         try {
           fp = path$1.resolve(file.cwd, file.path);
         } catch (error) {
-          return reject(error)
+          const exception =  (error);
+          return reject(exception)
         }
         fs.readFile(fp, options, done);
         function done(error, result) {
@@ -20867,12 +20883,13 @@ const write =
         try {
           fp = path$1.resolve(file.cwd, file.path);
         } catch (error) {
-          return reject(error)
+          const exception =  (error);
+          return reject(exception, null)
         }
-        fs.writeFile(fp, file.value || '', options, done);
+        fs.writeFile(fp, file.value || '', options || null, done);
         function done(error) {
           if (error) {
-            reject(error);
+            reject(error, null);
           } else {
             resolve(file);
           }
@@ -20881,11 +20898,11 @@ const write =
     }
   );
 function looksLikeAVFile(value) {
-  return (
+  return Boolean(
     value &&
-    typeof value === 'object' &&
-    'message' in value &&
-    'messages' in value
+      typeof value === 'object' &&
+      'message' in value &&
+      'messages' in value
   )
 }
 toVFile.readSync = readSync;
@@ -21262,7 +21279,7 @@ function stringWidth(string, options = {}) {
 }
 
 function statistics(value) {
-  var result = {true: 0, false: 0, null: 0};
+  const result = {true: 0, false: 0, null: 0};
   if (value) {
     if (Array.isArray(value)) {
       list(value);
@@ -21278,22 +21295,25 @@ function statistics(value) {
     total: result.true + result.false + result.null
   }
   function list(value) {
-    var index = -1;
+    let index = -1;
     while (++index < value.length) {
       one(value[index]);
     }
   }
   function one(value) {
     if ('messages' in value) return list(value.messages)
-    result[
-      value.fatal === undefined || value.fatal === null
-        ? null
-        : Boolean(value.fatal)
-    ]++;
+    const field =  (
+      String(
+        value.fatal === undefined || value.fatal === null
+          ? null
+          : Boolean(value.fatal)
+      )
+    );
+    result[field]++;
   }
 }
 
-var severities = {true: 2, false: 1, null: 0, undefined: 0};
+const severities = {true: 2, false: 1, null: 0, undefined: 0};
 function sort(file) {
   file.messages.sort(comparator);
   return file
@@ -21302,18 +21322,18 @@ function comparator(a, b) {
   return (
     check(a, b, 'line') ||
     check(a, b, 'column') ||
-    severities[b.fatal] - severities[a.fatal] ||
+    severities[String(b.fatal)] - severities[String(a.fatal)] ||
     compare(a, b, 'source') ||
     compare(a, b, 'ruleId') ||
     compare(a, b, 'reason') ||
     0
   )
 }
-function check(a, b, property) {
-  return (a[property] || 0) - (b[property] || 0)
+function check(a, b, field) {
+  return (a[field] || 0) - (b[field] || 0)
 }
-function compare(a, b, property) {
-  return String(a[property] || '').localeCompare(b[property] || '')
+function compare(a, b, field) {
+  return String(a[field] || '').localeCompare(b[field] || '')
 }
 
 function hasFlag(flag, argv = globalThis.Deno ? globalThis.Deno.args : process$1.argv) {
@@ -21465,24 +21485,23 @@ const labels = {
   null: 'info',
   undefined: 'info'
 };
-function reporter(files, options = {}) {
-  let one;
+function reporter(files, options) {
   if (!files) {
     return ''
   }
   if ('name' in files && 'message' in files) {
     return String(files.stack || files)
   }
-  if (!Array.isArray(files)) {
-    one = true;
-    files = [files];
+  const options_ = options || {};
+  if (Array.isArray(files)) {
+    return format$1(transform(files, options_), false, options_)
   }
-  return format$1(transform(files, options), one, options)
+  return format$1(transform([files], options_), true, options_)
 }
 function transform(files, options) {
   const rows = [];
   const all = [];
-  const sizes = {};
+  const sizes = {place: 0, label: 0, reason: 0, ruleId: 0, source: 0};
   let index = -1;
   while (++index < files.length) {
     const messages = sort({messages: [...files[index].messages]}).messages;

@@ -2,6 +2,12 @@
 
 <!--introduced_in=v18.0.0-->
 
+<!-- YAML
+added:
+  - v18.0.0
+  - v16.17.0
+-->
+
 > Stability: 1 - Experimental
 
 <!-- source_link=lib/test.js -->
@@ -150,8 +156,7 @@ test('skip() method with message', (t) => {
 Running tests can also be done using `describe` to declare a suite
 and `it` to declare a test.
 A suite is used to organize and group related tests together.
-`it` is an alias for `test`, except there is no test context passed,
-since nesting is done using suites.
+`it` is a shorthand for [`test()`][].
 
 ```js
 describe('A thing', () => {
@@ -513,8 +518,7 @@ flags for the test runner to use a specific reporter.
 The following built-reporters are supported:
 
 * `tap`
-  The `tap` reporter is the default reporter used by the test runner. It outputs
-  the test results in the [TAP][] format.
+  The `tap` reporter outputs the test results in the [TAP][] format.
 
 * `spec`
   The `spec` reporter outputs the test results in a human-readable format.
@@ -524,10 +528,13 @@ The following built-reporters are supported:
   where each passing test is represented by a `.`,
   and each failing test is represented by a `X`.
 
+When `stdout` is a [TTY][], the `spec` reporter is used by default.
+Otherwise, the `tap` reporter is used by default.
+
 ### Custom reporters
 
 [`--test-reporter`][] can be used to specify a path to custom reporter.
-a custom reporter is a module that exports a value
+A custom reporter is a module that exports a value
 accepted by [stream.compose][].
 Reporters should transform events emitted by a {TestsStream}
 
@@ -555,6 +562,11 @@ const customReporter = new Transform({
       case 'test:diagnostic':
         callback(null, event.data.message);
         break;
+      case 'test:coverage': {
+        const { totalLineCount } = event.data.summary.totals;
+        callback(null, `total line count: ${totalLineCount}\n`);
+        break;
+      }
     }
   },
 });
@@ -584,6 +596,11 @@ const customReporter = new Transform({
       case 'test:diagnostic':
         callback(null, event.data.message);
         break;
+      case 'test:coverage': {
+        const { totalLineCount } = event.data.summary.totals;
+        callback(null, `total line count: ${totalLineCount}\n`);
+        break;
+      }
     }
   },
 });
@@ -612,6 +629,11 @@ export default async function * customReporter(source) {
       case 'test:diagnostic':
         yield `${event.data.message}\n`;
         break;
+      case 'test:coverage': {
+        const { totalLineCount } = event.data.summary.totals;
+        yield `total line count: ${totalLineCount}\n`;
+        break;
+      }
     }
   }
 }
@@ -636,6 +658,11 @@ module.exports = async function * customReporter(source) {
       case 'test:diagnostic':
         yield `${event.data.message}\n`;
         break;
+      case 'test:coverage': {
+        const { totalLineCount } = event.data.summary.totals;
+        yield `total line count: ${totalLineCount}\n`;
+        break;
+      }
     }
   }
 };
@@ -674,11 +701,10 @@ added: v18.9.0
   properties are supported:
   * `concurrency` {number|boolean} If a number is provided,
     then that many files would run in parallel.
-    If truthy, it would run (number of cpu cores - 1)
-    files in parallel.
-    If falsy, it would only run one file at a time.
-    If unspecified, subtests inherit this value from their parent.
-    **Default:** `true`.
+    If `true`, it would run `os.availableParallelism() - 1` test files in
+    parallel.
+    If `false`, it would only run one test file at a time.
+    **Default:** `false`.
   * `files`: {Array} An array containing the list of files to run.
     **Default** matching files from [test runner execution model][].
   * `setup` {Function} A function that accepts the `TestsStream` instance
@@ -721,10 +747,9 @@ changes:
   properties are supported:
   * `concurrency` {number|boolean} If a number is provided,
     then that many tests would run in parallel.
-    If truthy, it would run (number of cpu cores - 1)
-    tests in parallel.
+    If `true`, it would run `os.availableParallelism() - 1` tests in parallel.
     For subtests, it will be `Infinity` tests in parallel.
-    If falsy, it would only run one test at a time.
+    If `false`, it would only run one test at a time.
     If unspecified, subtests inherit this value from their parent.
     **Default:** `false`.
   * `only` {boolean} If truthy, and the test context is configured to run
@@ -744,7 +769,8 @@ changes:
   to this function is a [`TestContext`][] object. If the test uses callbacks,
   the callback function is passed as the second argument. **Default:** A no-op
   function.
-* Returns: {Promise} Resolved with `undefined` once the test completes.
+* Returns: {Promise} Resolved with `undefined` once
+  the test completes, or immediately if the test runs within [`describe()`][].
 
 The `test()` function is the value imported from the `test` module. Each
 invocation of this function results in reporting the test to the {TestsStream}.
@@ -753,10 +779,12 @@ The `TestContext` object passed to the `fn` argument can be used to perform
 actions related to the current test. Examples include skipping the test, adding
 additional diagnostic information, or creating subtests.
 
-`test()` returns a `Promise` that resolves once the test completes. The return
-value can usually be discarded for top level tests. However, the return value
-from subtests should be used to prevent the parent test from finishing first
-and cancelling the subtest as shown in the following example.
+`test()` returns a `Promise` that resolves once the test completes.
+if `test()` is called within a `describe()` block, it resolve immediately.
+The return value can usually be discarded for top level tests.
+However, the return value from subtests should be used to prevent the parent
+test from finishing first and cancelling the subtest
+as shown in the following example.
 
 ```js
 test('top level test', async (t) => {
@@ -814,17 +842,19 @@ Shorthand for marking a suite as `only`, same as
 
 ## `it([name][, options][, fn])`
 
-* `name` {string} The name of the test, which is displayed when reporting test
-  results. **Default:** The `name` property of `fn`, or `'<anonymous>'` if `fn`
-  does not have a name.
-* `options` {Object} Configuration options for the suite.
-  supports the same options as `test([name][, options][, fn])`.
-* `fn` {Function|AsyncFunction} The function under test.
-  If the test uses callbacks, the callback function is passed as an argument.
-  **Default:** A no-op function.
-* Returns: `undefined`.
+<!-- YAML
+added:
+  - v18.6.0
+  - v16.17.0
+changes:
+  - version: v18.16.0
+    pr-url: https://github.com/nodejs/node/pull/46889
+    description: Calling `it()` is now equivalent to calling `test()`.
+-->
 
-The `it()` function is the value imported from the `node:test` module.
+Shorthand for [`test()`][].
+
+The `it()` function is imported from the `node:test` module.
 
 ## `it.skip([name][, options][, fn])`
 
@@ -923,7 +953,7 @@ before each subtest of the current suite.
 
 ```js
 describe('tests', async () => {
-  beforeEach(() => t.diagnostic('about to run a test'));
+  beforeEach(() => console.log('about to run a test'));
   it('is a subtest', () => {
     assert.ok('some relevant assertion here');
   });
@@ -952,7 +982,7 @@ after each subtest of the current test.
 
 ```js
 describe('tests', async () => {
-  afterEach(() => t.diagnostic('about to run a test'));
+  afterEach(() => console.log('finished running a test'));
   it('is a subtest', () => {
     assert.ok('some relevant assertion here');
   });
@@ -1592,9 +1622,12 @@ changes:
   `fn` does not have a name.
 * `options` {Object} Configuration options for the subtest. The following
   properties are supported:
-  * `concurrency` {number} The number of tests that can be run at the same time.
+  * `concurrency` {number|boolean|null} If a number is provided,
+    then that many tests would run in parallel.
+    If `true`, it would run all subtests in parallel.
+    If `false`, it would only run one test at a time.
     If unspecified, subtests inherit this value from their parent.
-    **Default:** `1`.
+    **Default:** `null`.
   * `only` {boolean} If truthy, and the test context is configured to run
     `only` tests, then this test will be run. Otherwise, the test is skipped.
     **Default:** `false`.
@@ -1657,6 +1690,7 @@ added: v18.7.0
   aborted.
 
 [TAP]: https://testanything.org/
+[TTY]: tty.md
 [`--experimental-test-coverage`]: cli.md#--experimental-test-coverage
 [`--test-name-pattern`]: cli.md#--test-name-pattern
 [`--test-only`]: cli.md#--test-only
@@ -1672,6 +1706,7 @@ added: v18.7.0
 [`context.diagnostic`]: #contextdiagnosticmessage
 [`context.skip`]: #contextskipmessage
 [`context.todo`]: #contexttodomessage
+[`describe()`]: #describename-options-fn
 [`run()`]: #runoptions
 [`test()`]: #testname-options-fn
 [describe options]: #describename-options-fn

@@ -646,16 +646,23 @@ Returns the current max listener value for the `EventEmitter` which is either
 set by [`emitter.setMaxListeners(n)`][] or defaults to
 [`events.defaultMaxListeners`][].
 
-### `emitter.listenerCount(eventName)`
+### `emitter.listenerCount(eventName[, listener])`
 
 <!-- YAML
 added: v3.2.0
+changes:
+  - version: v18.16.0
+    pr-url: https://github.com/nodejs/node/pull/46523
+    description: Added the `listener` argument.
 -->
 
 * `eventName` {string|symbol} The name of the event being listened for
+* `listener` {Function} The event handler function
 * Returns: {integer}
 
-Returns the number of listeners listening to the event named `eventName`.
+Returns the number of listeners listening for the event named `eventName`.
+If `listener` is provided, it will return how many times the listener is found
+in the list of the listeners of the event.
 
 ### `emitter.listeners(eventName)`
 
@@ -2314,6 +2321,20 @@ equivalent `EventEmitter` API. The only difference between `addListener()` and
 `addEventListener()` is that `addListener()` will return a reference to the
 `EventTarget`.
 
+#### `nodeEventTarget.emit(type, arg)`
+
+<!-- YAML
+added: v15.2.0
+-->
+
+* `type` {string}
+* `arg` {any}
+* Returns: {boolean} `true` if event listeners registered for the `type` exist,
+  otherwise `false`.
+
+Node.js-specific extension to the `EventTarget` class that dispatches the
+`arg` to the list of handlers for `type`.
+
 #### `nodeEventTarget.eventNames()`
 
 <!-- YAML
@@ -2375,7 +2396,7 @@ added: v14.5.0
 
 * Returns: {EventTarget} this
 
-Node.js-specific alias for `eventTarget.removeListener()`.
+Node.js-specific alias for `eventTarget.removeEventListener()`.
 
 #### `nodeEventTarget.on(type, listener)`
 
@@ -2389,7 +2410,7 @@ added: v14.5.0
 
 * Returns: {EventTarget} this
 
-Node.js-specific alias for `eventTarget.addListener()`.
+Node.js-specific alias for `eventTarget.addEventListener()`.
 
 #### `nodeEventTarget.once(type, listener)`
 
@@ -2448,7 +2469,7 @@ to the `EventTarget`.
 [`EventTarget` error handling]: #eventtarget-error-handling
 [`Event` Web API]: https://dom.spec.whatwg.org/#event
 [`domain`]: domain.md
-[`emitter.listenerCount()`]: #emitterlistenercounteventname
+[`emitter.listenerCount()`]: #emitterlistenercounteventname-listener
 [`emitter.removeListener()`]: #emitterremovelistenereventname-listener
 [`emitter.setMaxListeners(n)`]: #emittersetmaxlistenersn
 [`event.defaultPrevented`]: #eventdefaultprevented

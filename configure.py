@@ -45,7 +45,7 @@ from utils import SearchFiles
 parser = argparse.ArgumentParser()
 
 valid_os = ('win', 'mac', 'solaris', 'freebsd', 'openbsd', 'linux',
-            'android', 'aix', 'cloudabi', 'ios')
+            'android', 'aix', 'cloudabi', 'os400', 'ios')
 valid_arch = ('arm', 'arm64', 'ia32', 'mips', 'mipsel', 'mips64el', 'ppc',
               'ppc64', 'x64', 'x86', 'x86_64', 's390x', 'riscv64', 'loong64')
 valid_arm_float_abi = ('soft', 'softfp', 'hard')
@@ -145,6 +145,12 @@ parser.add_argument('--no-ifaddrs',
     dest='no_ifaddrs',
     default=None,
     help='use on deprecated SunOS systems that do not support ifaddrs.h')
+
+parser.add_argument('--disable-single-executable-application',
+    action='store_true',
+    dest='disable_single_executable_application',
+    default=None,
+    help='Disable Single Executable Application support.')
 
 parser.add_argument("--fully-static",
     action="store_true",
@@ -588,7 +594,7 @@ intl_optgroup.add_argument('--without-intl',
     action='store_const',
     dest='with_intl',
     const='none',
-    help='Disable Intl, same as --with-intl=none (disables inspector)')
+    help='Disable Intl, same as --with-intl=none')
 
 intl_optgroup.add_argument('--with-icu-path',
     action='store',
@@ -1327,7 +1333,7 @@ def configure_node(o):
   elif sys.platform == 'zos':
     configure_zos(o)
 
-  if flavor == 'aix':
+  if flavor in ('aix', 'os400'):
     o['variables']['node_target_type'] = 'static_library'
 
   if target_arch in ('x86', 'x64', 'ia32', 'x32'):
@@ -1404,6 +1410,10 @@ def configure_node(o):
   if options.no_ifaddrs:
     o['defines'] += ['SUNOS_NO_IFADDRS']
 
+  o['variables']['single_executable_application'] = b(not options.disable_single_executable_application)
+  if options.disable_single_executable_application:
+    o['defines'] += ['DISABLE_SINGLE_EXECUTABLE_APPLICATION']
+
   # By default, enable ETW on Windows.
   if flavor == 'win':
     o['variables']['node_use_etw'] = b(not options.without_etw)
@@ -1447,6 +1457,8 @@ def configure_node(o):
   elif sys.platform == 'darwin':
     shlib_suffix = '%s.dylib'
   elif sys.platform.startswith('aix'):
+    shlib_suffix = '%s.a'
+  elif sys.platform == 'os400':
     shlib_suffix = '%s.a'
   elif sys.platform.startswith('zos'):
     shlib_suffix = '%s.x'
@@ -1961,6 +1973,9 @@ def configure_intl(o):
   elif flavor == 'mac':
     icu_config['variables']['icu_asm_ext'] = 'S'
     icu_config['variables']['icu_asm_opts'] = [ '-a', 'gcc-darwin' ]
+  elif sys.platform == 'os400':
+    icu_config['variables']['icu_asm_ext'] = 'S'
+    icu_config['variables']['icu_asm_opts'] = [ '-a', 'xlc' ]
   elif sys.platform.startswith('aix'):
     icu_config['variables']['icu_asm_ext'] = 'S'
     icu_config['variables']['icu_asm_opts'] = [ '-a', 'xlc' ]
@@ -1979,7 +1994,6 @@ def configure_intl(o):
 
 def configure_inspector(o):
   disable_inspector = (options.without_inspector or
-                       options.with_intl in (None, 'none') or
                        options.without_ssl)
   o['variables']['v8_enable_inspector'] = 0 if disable_inspector else 1
 
