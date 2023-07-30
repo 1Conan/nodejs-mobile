@@ -148,3 +148,27 @@ for COMPILE_FOR_ARCH in "${COMPILE_FOR_ARCHS[@]}"; do
     echo "Building Framework for ${COMPILE_FOR_ARCH}..."
     build_framework ${COMPILE_FOR_ARCH}
 done
+
+# Create xcframework
+
+vtool -show-build out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile > /tmp/buildVersion
+SDK_VERSION=$(grep sdk /tmp/buildVersion | awk '{print $2}')
+MINOS_VERSION=$(grep minos /tmp/buildVersion | awk '{print $2}')
+
+vtool \
+  -set-build-version iossim ${MINOS_VERSION} ${SDK_VERSION} \
+  -replace -output out_ios/NodeMobile \
+  out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile
+
+mkdir -p out_ios/Release-iphonesimulator
+cp -r out_ios/Release-iphoneos/NodeMobile.framework{,.dSYM} out_ios/Release-iphonesimulator
+
+rm -rf out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
+mv out_ios/NodeMobile out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
+
+xcodebuild -create-xcframework \
+  -framework out_ios/Release-iphoneos/NodeMobile.framework \
+  -debug-symbols $(pwd)/out_ios/Release-iphoneos/NodeMobile.framework.dSYM \
+  -framework out_ios/Release-iphonesimulator/NodeMobile.framework \
+  -debug-symbols $(pwd)/out_ios/Release-iphonesimulator/NodeMobile.framework.dSYM \
+  -output out_ios/NodeMobile.xcframework
