@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2702B1162A7644AE00EB448B /* libada.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2702B1152A7644AE00EB448B /* libada.a */; };
 		2716FA9E29AD897700E8E6C5 /* libsimdutf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FA9D29AD897700E8E6C5 /* libsimdutf.a */; };
 		2716FAA029AD898B00E8E6C5 /* libbase64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FA9F29AD898B00E8E6C5 /* libbase64.a */; };
 		2716FAA229AD899100E8E6C5 /* libzlib_inflate_chunk_simd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2716FAA129AD899100E8E6C5 /* libzlib_inflate_chunk_simd.a */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2702B1152A7644AE00EB448B /* libada.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libada.a; path = bin/libada.a; sourceTree = "<group>"; };
 		2716FA9D29AD897700E8E6C5 /* libsimdutf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsimdutf.a; path = bin/libsimdutf.a; sourceTree = "<group>"; };
 		2716FA9F29AD898B00E8E6C5 /* libbase64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbase64.a; path = bin/libbase64.a; sourceTree = "<group>"; };
 		2716FAA129AD899100E8E6C5 /* libzlib_inflate_chunk_simd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlib_inflate_chunk_simd.a; path = bin/libzlib_inflate_chunk_simd.a; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				2716FAA029AD898B00E8E6C5 /* libbase64.a in Frameworks */,
 				27A1919C27CA2EFC00DF8360 /* libnode.a in Frameworks */,
 				27A1919E27CA2F0200DF8360 /* libv8_snapshot.a in Frameworks */,
+				2702B1162A7644AE00EB448B /* libada.a in Frameworks */,
 				2AEB53CD27D3BB3500B48104 /* libicudata.a in Frameworks */,
 				27A191A027CA2F0D00DF8360 /* libv8_libplatform.a in Frameworks */,
 				27A191A227CA2F1200DF8360 /* libzlib.a in Frameworks */,
@@ -133,6 +136,7 @@
 		3376C9181EC3922E0007AD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2702B1152A7644AE00EB448B /* libada.a */,
 				2716FAA329AD89A200E8E6C5 /* libbase64_neon64.a */,
 				2716FA9F29AD898B00E8E6C5 /* libbase64.a */,
 				27A1919727CA2EE800DF8360 /* libhistogram.a */,

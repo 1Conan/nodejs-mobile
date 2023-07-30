@@ -10,6 +10,7 @@ export COMPILE_FOR_ARCHS=(
 # fi
 
 export LIBRARY_FILES=(
+    libada.a
     libbase64.a
     libbase64_neon64.a
     libbrotli.a
@@ -88,8 +89,7 @@ compile_for_arch() {
         --with-arm-float-abi=hard \
         --with-arm-fpu=neon \
         --with-intl=small-icu \
-        --v8-options=--jitless \
-        --v8-disable-object-print
+        --v8-enable-snapshot-compression
 
     make -j$(getconf _NPROCESSORS_ONLN)
     mkdir -p ${TARGET_LIBRARY_PATH}

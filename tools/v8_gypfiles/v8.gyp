@@ -870,7 +870,7 @@
                 }],
               ],
               'target_conditions': [
-                ['OS=="ios" and _toolset=="host"', {
+                ['_toolset=="host" and host_arch=="x64" and OS=="ios"', {
                   'sources': ['<(V8_ROOT)/src/trap-handler/handler-outside-simulator.cc'],
                 }],
               ],
