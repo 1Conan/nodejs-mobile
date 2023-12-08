@@ -85,7 +85,6 @@ compile_for_arch() {
         --without-dtrace \
         --without-npm \
         --without-corepack \
-        --without-inspector \
         --with-arm-float-abi=hard \
         --with-arm-fpu=neon \
         --with-intl=small-icu \
