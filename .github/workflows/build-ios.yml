@@ -36,25 +36,25 @@ jobs:
         run: |
           ./tools/ios_framework_prepare.sh
 
-      - name: convert simulator framework to FAT framework
-        run: |
-          vtool -show-build out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile > /tmp/buildVersion
-          SDK_VERSION=$(grep sdk /tmp/buildVersion | awk '{print $2}')
-          MINOS_VERSION=$(grep minos /tmp/buildVersion | awk '{print $2}')
+      # - name: convert simulator framework to FAT framework
+      #   run: |
+          # vtool -show-build out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile > /tmp/buildVersion
+          # SDK_VERSION=$(grep sdk /tmp/buildVersion | awk '{print $2}')
+          # MINOS_VERSION=$(grep minos /tmp/buildVersion | awk '{print $2}')
 
-          vtool \
-            -set-build-version iossim ${MINOS_VERSION} ${SDK_VERSION} \
-            -replace -output out_ios/NodeMobile \
-            out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile
+          # vtool \
+          #   -set-build-version iossim ${MINOS_VERSION} ${SDK_VERSION} \
+          #   -replace -output out_ios/NodeMobile \
+          #   out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile
 
-          lipo \
-            -create \
-              out_ios/NodeMobile \
-              out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile \
-            -output out_ios/NodeMobileSim
+          # lipo \
+          #   -create \
+          #     out_ios/NodeMobile \
+          #     out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile \
+          #   -output out_ios/NodeMobileSim
 
-          rm -rf out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
-          mv out_ios/NodeMobileSim out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
+          # rm -rf out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
+          # mv out_ios/NodeMobileSim out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
 
       - name: build xcframework
         run: |
