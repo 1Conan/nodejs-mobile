@@ -14,47 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: rui314/setup-mold@v1
-
-      - uses: actions/cache@v2
-        with:
-          path: |
-            /Users/runner/Library/Caches/Mozilla.sccache
-          key: build-ios-${{ env.GITHUB_SHA }}
-          restore-keys: |
-            build-ios-
-
-      - name: setup sccache
-        run: |
-          wget -q https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERSION}/sccache-v${SCCACHE_VERSION}-x86_64-apple-darwin.tar.gz
-          tar xf sccache-v${SCCACHE_VERSION}-x86_64-apple-darwin.tar.gz
-          mv sccache-v${SCCACHE_VERSION}-x86_64-apple-darwin/sccache /usr/local/bin
-          rm -rf sccache-v${SCCACHE_VERSION}-x86_64-apple-darwin*
-          chmod +x /usr/local/bin/sccache
-
       - name: build framework
         run: |
           ./tools/ios_framework_prepare.sh
-
-      # - name: convert simulator framework to FAT framework
-      #   run: |
-          # vtool -show-build out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile > /tmp/buildVersion
-          # SDK_VERSION=$(grep sdk /tmp/buildVersion | awk '{print $2}')
-          # MINOS_VERSION=$(grep minos /tmp/buildVersion | awk '{print $2}')
-
-          # vtool \
-          #   -set-build-version iossim ${MINOS_VERSION} ${SDK_VERSION} \
-          #   -replace -output out_ios/NodeMobile \
-          #   out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile
-
-          # lipo \
-          #   -create \
-          #     out_ios/NodeMobile \
-          #     out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile \
-          #   -output out_ios/NodeMobileSim
-
-          # rm -rf out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
-          # mv out_ios/NodeMobileSim out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
 
       - name: build xcframework
         run: |
