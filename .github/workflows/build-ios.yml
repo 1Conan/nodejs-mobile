@@ -18,23 +18,6 @@ jobs:
         run: |
           ./tools/ios_framework_prepare.sh
 
-      - name: build xcframework
-        run: |
-          xcodebuild -create-xcframework \
-            -framework out_ios/Release-iphoneos/NodeMobile.framework \
-            -debug-symbols $(pwd)/out_ios/Release-iphoneos/NodeMobile.framework.dSYM \
-            -framework out_ios/Release-iphonesimulator/NodeMobile.framework \
-            -debug-symbols $(pwd)/out_ios/Release-iphonesimulator/NodeMobile.framework.dSYM \
-            -output out_ios/NodeMobile.xcframework
-
-      - name: Upload framework
-        uses: actions/upload-artifact@v3
-        with:
-          name: NodeMobile.framework
-          path: |
-            out_ios/Release-iphoneos/NodeMobile.framework
-            out_ios/Release-iphonesimulator/NodeMobile.framework
-
       - name: Upload xcframework
         uses: actions/upload-artifact@v3
         with:
