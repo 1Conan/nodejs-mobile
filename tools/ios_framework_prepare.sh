@@ -153,21 +153,46 @@ done
 vtool -show-build out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile > /tmp/buildVersion
 SDK_VERSION=$(grep sdk /tmp/buildVersion | awk '{print $2}')
 MINOS_VERSION=$(grep minos /tmp/buildVersion | awk '{print $2}')
+VISIONOS_SDK_VERSION=1.0
+VISIONOS_MINOS_VERSION=1.0
 
+# iOS Simulator
 vtool \
   -set-build-version iossim ${MINOS_VERSION} ${SDK_VERSION} \
   -replace -output out_ios/NodeMobile \
   out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile
-
 mkdir -p out_ios/Release-iphonesimulator
 cp -r out_ios/Release-iphoneos/NodeMobile.framework{,.dSYM} out_ios/Release-iphonesimulator
-
 rm -rf out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
 mv out_ios/NodeMobile out_ios/Release-iphonesimulator/NodeMobile.framework/NodeMobile
+
+# VisionOS Simulator
+vtool \
+  -set-build-version xrossim ${VISIONOS_MINOS_VERSION} ${VISIONOS_SDK_VERSION} \
+  -replace -output out_ios/NodeMobile \
+  out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile
+mkdir -p out_ios/Release-visionsimulator
+cp -r out_ios/Release-iphoneos/NodeMobile.framework{,.dSYM} out_ios/Release-visionsimulator
+rm -rf out_ios/Release-visionsimulator/NodeMobile.framework/NodeMobile
+mv out_ios/NodeMobile out_ios/Release-visionsimulator/NodeMobile.framework/NodeMobile
+
+# VisionOS
+vtool \
+  -set-build-version xros ${VISIONOS_MINOS_VERSION} ${VISIONOS_SDK_VERSION} \
+  -replace -output out_ios/NodeMobile \
+  out_ios/Release-iphoneos/NodeMobile.framework/NodeMobile
+mkdir -p out_ios/Release-visionos
+cp -r out_ios/Release-iphoneos/NodeMobile.framework{,.dSYM} out_ios/Release-visionos
+rm -rf out_ios/Release-visionos/NodeMobile.framework/NodeMobile
+mv out_ios/NodeMobile out_ios/Release-visionos/NodeMobile.framework/NodeMobile
 
 xcodebuild -create-xcframework \
   -framework out_ios/Release-iphoneos/NodeMobile.framework \
   -debug-symbols $(pwd)/out_ios/Release-iphoneos/NodeMobile.framework.dSYM \
   -framework out_ios/Release-iphonesimulator/NodeMobile.framework \
   -debug-symbols $(pwd)/out_ios/Release-iphonesimulator/NodeMobile.framework.dSYM \
+  -framework out_ios/Release-visionos/NodeMobile.framework \
+  -debug-symbols $(pwd)/out_ios/Release-visionos/NodeMobile.framework.dSYM \
+  -framework out_ios/Release-visionsimulator/NodeMobile.framework \
+  -debug-symbols $(pwd)/out_ios/Release-visionsimulator/NodeMobile.framework.dSYM \
   -output out_ios/NodeMobile.xcframework
