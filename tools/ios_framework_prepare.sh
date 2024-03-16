@@ -80,7 +80,6 @@ compile_for_arch() {
         --dest-cpu=${TARGET_ARCH} \
         --cross-compiling \
         --enable-static \
-        --enable-lto \
         --without-etw \
         --without-dtrace \
         --without-npm \
