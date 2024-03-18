@@ -584,7 +584,7 @@
           'GCC_ENABLE_CPP_RTTI': 'NO',              # -fno-rtti
           'GCC_ENABLE_PASCAL_STRINGS': 'NO',        # No -mpascal-strings
           'PREBINDING': 'NO',                       # No -Wl,-prebind
-          'IPHONEOS_DEPLOYMENT_TARGET': '15.0',     # -iphoneos-version-min=15.0
+          'IPHONEOS_DEPLOYMENT_TARGET': '16.0',     # -iphoneos-version-min=16.0
           'USE_HEADERMAP': 'NO',
           'DEAD_CODE_STRIPPING': 'YES',
           'LLVM_LTO': 'YES',
@@ -592,13 +592,14 @@
             '-ffunction-sections',
             '-fdata-sections',
             '-fno-strict-aliasing',
-            '-Wl,-dead_strip',
           ],
           'WARNING_CFLAGS': [
             '-Wall',
             '-Wendif-labels',
             '-W',
             '-Wno-unused-parameter',
+            # Fixes an issue with bit-field when building with Xcode 15.3
+            '-Wno-enum-constexpr-conversion',
           ],
         },
         'target_conditions': [
