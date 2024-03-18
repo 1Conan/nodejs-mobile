@@ -23,5 +23,5 @@ jobs:
       - name: Upload xcframework
         uses: actions/upload-artifact@v3
         with:
-          name: NodeMobile.xcframework
-          path: out_ios/NodeMobile.xcframework
+          name: NodeMobile.xcframework.zip
+          path: out_ios/NodeMobile.xcframework.zip

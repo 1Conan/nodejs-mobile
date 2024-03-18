@@ -80,6 +80,7 @@ compile_for_arch() {
         --dest-cpu=${TARGET_ARCH} \
         --cross-compiling \
         --enable-static \
+        --enable-lto \
         --without-etw \
         --without-dtrace \
         --without-npm \
@@ -195,3 +196,8 @@ xcodebuild -create-xcframework \
   -framework out_ios/Release-visionsimulator/NodeMobile.framework \
   -debug-symbols $(pwd)/out_ios/Release-visionsimulator/NodeMobile.framework.dSYM \
   -output out_ios/NodeMobile.xcframework
+
+pushd out_ios
+  zip -r NodeMobile.xcframework.zip NodeMobile.xcframework
+  sha256sum NodeMobile.xcframework.zip
+popd
